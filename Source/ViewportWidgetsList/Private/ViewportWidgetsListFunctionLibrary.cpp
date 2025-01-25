@@ -1,34 +1,38 @@
 // Copyright kiruru002. All Rights Reserved.
 
 #include "ViewportWidgetsListFunctionLibrary.h"
+#include "ViewportWidgetsList/Public/ViewportWidgetsList.h"
 #include "Components/Widget.h"
 #include "Components/PanelWidget.h"
+#include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetTree.h"
 
 UWidget* UViewportWidgetsListFunctionLibrary::FindParentWidgetOfType(UWidget* StartingWidget, TSubclassOf<UWidget> Type)
 {
-    while (StartingWidget)
+    if (StartingWidget)
     {
-        UWidget* LocalRoot = StartingWidget;
-        UWidget* LocalParent = Cast<UWidget>(LocalRoot->GetParent());
-        while (LocalParent)
+        UPanelWidget* ParentPanel = StartingWidget->GetParent();
+        if (ParentPanel)
         {
-            if (LocalParent->IsA(Type))
+            UWidget* ParentWidget = Cast<UWidget>(ParentPanel);
+            if (ParentWidget)
             {
-                return LocalParent;
+                if (ParentWidget->IsA(Type))
+                {
+                    return ParentWidget;
+                }
+                return FindParentWidgetOfType(ParentWidget, Type);
             }
-            LocalRoot = LocalParent;
-            LocalParent = LocalParent->GetParent();
         }
-        UWidgetTree* WidgetTree = Cast<UWidgetTree>(LocalRoot->GetOuter());
-        if (WidgetTree == nullptr)
+        UObject* OuterObject = StartingWidget->GetOuter();
+        if (OuterObject)
         {
-            break;
-        }
-        StartingWidget = Cast<UUserWidget>(WidgetTree->GetOuter());
-        if (StartingWidget && StartingWidget->IsA(Type))
-        {
-            return StartingWidget;
+            UWidget* ParentUserWidget = Cast<UUserWidget>(OuterObject->GetOuter());
+            if (ParentUserWidget && ParentUserWidget->IsA(Type))
+            {
+                return ParentUserWidget;
+            }
+            return FindParentWidgetOfType(ParentUserWidget, Type);
         }
     }
     return nullptr;

@@ -10,14 +10,6 @@ class FViewportWidgetsListModule : public IModuleInterface
 {
 public:
 
-    FDelegateHandle OnPreBeginPIEHandle;
-    FDelegateHandle OnBeginPIEHandle;
-    FDelegateHandle OnPrePIEEndedHandle;
-    FDelegateHandle OnEndPIEHandle;
-    FDelegateHandle OnStartGameInstanceHandle;
-
-public:
-
     /** IModuleInterface implementation */
     virtual void StartupModule() override;
     virtual void ShutdownModule() override;

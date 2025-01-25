@@ -37,6 +37,12 @@ public:
     UPROPERTY(BlueprintReadWrite, BlueprintAssignable, EditAnywhere, Category = "Default")
     FGameInstanceEvent OnStartGameInstance;
 
+    FDelegateHandle OnPreBeginPIEHandle;
+    FDelegateHandle OnBeginPIEHandle;
+    FDelegateHandle OnPrePIEEndedHandle;
+    FDelegateHandle OnEndPIEHandle;
+    FDelegateHandle OnStartGameInstanceHandle;
+
 public:
 
     DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWidgetNumDecreased);
@@ -44,7 +50,8 @@ public:
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnDebuggingInputEvent, ESlateDebuggingInputEvent, InputEventType, bool, Handled, UWidget*, HandlerWidget, const FString&, AdditionalContent);
 
 public:
-    void Initialize(FSubsystemCollectionBase& Collection) override;
+    virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+    virtual void Deinitialize() override;
     void AddViewport(UWidget* Widget, ULocalPlayer* LocalPlayer);
     void RemoveViewport(UWidget* Widget);
     void DebuggingInputEvent(const FSlateDebuggingInputEventArgs& EventArgs);
