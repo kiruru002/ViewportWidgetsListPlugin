@@ -1,0 +1,24 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "1.0",
+    "FriendlyName": "ViewportWidgetsList",
+    "Description": "Show viewport widgets",
+    "Category": "Other",
+    "CreatedBy": "kiruru002",
+    "CreatedByURL": "",
+    "DocsURL": "",
+    "MarketplaceURL": "",
+    "SupportURL": "",
+    "CanContainContent": true,
+    "IsBetaVersion": false,
+    "IsExperimentalVersion": false,
+    "Installed": false,
+    "Modules": [
+        {
+            "Name": "ViewportWidgetsList",
+            "Type": "Editor",
+            "LoadingPhase": "Default"
+        }
+    ]
+}
