@@ -45,6 +45,7 @@ void UViewportWidgetsListEditorSubsystem::Initialize(FSubsystemCollectionBase& C
         {
             UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
             Subsystem->OnEndPIE.Broadcast(bIsSimulating);
+            Subsystem->CurrentPIEGameInstance = nullptr;
         }
     });
     OnStartGameInstanceHandle = FWorldDelegates::OnStartGameInstance.AddLambda([](UGameInstance* GameInstance)
@@ -52,6 +53,7 @@ void UViewportWidgetsListEditorSubsystem::Initialize(FSubsystemCollectionBase& C
         if (GEditor)
         {
             UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
+            Subsystem->CurrentPIEGameInstance = GameInstance;
             Subsystem->OnStartGameInstance.Broadcast(GameInstance);
         }
     });

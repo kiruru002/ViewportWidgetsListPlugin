@@ -57,17 +57,20 @@ public:
     void DebuggingInputEvent(const FSlateDebuggingInputEventArgs& EventArgs);
 
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UViewportWidgets")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UViewportWidgetsListEditorSubsystem")
     TArray<TObjectPtr<UWidget>> ViewportWidgets;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, BlueprintAssignable, Category = "UViewportWidgets")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, BlueprintAssignable, Category = "UViewportWidgetsListEditorSubsystem")
     FOnWidgetNumIncreased OnWidgetAdded;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, BlueprintAssignable, Category = "UViewportWidgets")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, BlueprintAssignable, Category = "UViewportWidgetsListEditorSubsystem")
     FOnWidgetNumDecreased OnWidgetRemoved;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, BlueprintAssignable, Category = "UViewportWidgets")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, BlueprintAssignable, Category = "UViewportWidgetsListEditorSubsystem")
     FOnDebuggingInputEvent OnDebuggingInputEvent;
+
+    UPROPERTY(BlueprintReadOnly, Category = "UViewportWidgetsListEditorSubsystem")
+    UGameInstance* CurrentPIEGameInstance;
 
     UWidget* LastEnteredWidget;
 };
