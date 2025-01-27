@@ -10,36 +10,43 @@
 
 UWidget* UViewportWidgetsListFunctionLibrary::FindParentWidgetOfType(UWidget* StartingWidget, TSubclassOf<UWidget> Type)
 {
-    if (IsValid(StartingWidget) && IsValid(StartingWidget->GetParent()))
+    while (IsValid(StartingWidget))
     {
-        UWidget* ParentWidget = Cast<UWidget>(StartingWidget->GetParent());
-        if (IsValid(ParentWidget))
+        UWidget* LocalRoot = StartingWidget;
+        UWidget* LocalParent = LocalRoot->GetParent();
+        while (IsValid(LocalParent))
         {
-            if (ParentWidget->GetClass()->IsChildOf(Type))
+            if (LocalParent->IsA(Type))
             {
-                return ParentWidget;
+                return LocalParent;
             }
-            return FindParentWidgetOfType(ParentWidget, Type);
+            LocalRoot = LocalParent;
+            LocalParent = LocalParent->GetParent();
         }
-        UObject* OuterObject = StartingWidget->GetOuter();
-        if (IsValid(OuterObject))
+
+        if (IsValid(LocalRoot->GetOuter()))
         {
-            UWidgetTree* WidgetTree = Cast<UWidgetTree>(OuterObject);
+            UWidgetTree* WidgetTree = Cast<UWidgetTree>(LocalRoot->GetOuter());
             if (WidgetTree == nullptr)
             {
-                return nullptr;
+                break;
             }
-            if (IsValid(OuterObject->GetOuter()))
+
+            if (IsValid(WidgetTree->GetOuter()))
             {
-                UWidget* ParentUserWidget = Cast<UUserWidget>(OuterObject->GetOuter());
-                if (IsValid(ParentUserWidget) && ParentUserWidget->GetClass()->IsChildOf(Type))
+                StartingWidget = Cast<UUserWidget>(WidgetTree->GetOuter());
+                if (StartingWidget && StartingWidget->IsA(Type))
                 {
-                    return ParentUserWidget;
+                    return StartingWidget;
                 }
-                return FindParentWidgetOfType(ParentUserWidget, Type);
+            }
+            else
+            {
+                StartingWidget = nullptr;
             }
         }
     }
+
     return nullptr;
 }
 
