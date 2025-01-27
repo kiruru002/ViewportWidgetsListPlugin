@@ -125,52 +125,55 @@ void UViewportWidgetsListEditorSubsystem::RemoveViewport(UWidget* Widget)
 
 void UViewportWidgetsListEditorSubsystem::DebuggingInputEvent(const FSlateDebuggingInputEventArgs& EventArgs)
 {
-    if (EventArgs.InputEventType == ESlateDebuggingInputEvent::MouseButtonUp ||
-        EventArgs.InputEventType == ESlateDebuggingInputEvent::MouseButtonDown ||
-        EventArgs.InputEventType == ESlateDebuggingInputEvent::MouseButtonDoubleClick)
+    if (CurrentPIEGameInstance)
     {
-        TSharedPtr<FReflectionMetaData> MetaData = FReflectionMetaData::GetWidgetOrParentMetaData(EventArgs.HandlerWidget.Get());
-        if (MetaData.IsValid())
+        if (EventArgs.InputEventType == ESlateDebuggingInputEvent::MouseButtonUp ||
+            EventArgs.InputEventType == ESlateDebuggingInputEvent::MouseButtonDown ||
+            EventArgs.InputEventType == ESlateDebuggingInputEvent::MouseButtonDoubleClick)
         {
-            UWidget* Widget = Cast<UWidget>(MetaData->SourceObject.Get());
-            if (IsValid(Widget))
+            TSharedPtr<FReflectionMetaData> MetaData = FReflectionMetaData::GetWidgetOrParentMetaData(EventArgs.HandlerWidget.Get());
+            if (MetaData.IsValid())
             {
-                OnDebuggingInputEvent.Broadcast(EventArgs.InputEventType, EventArgs.Reply.IsEventHandled(), Widget, EventArgs.AdditionalContent);
-            }
-        }
-    }
-    else if (EventArgs.InputEventType == ESlateDebuggingInputEvent::MouseEnter)
-    {
-        TSharedPtr<FReflectionMetaData> MetaData = FReflectionMetaData::GetWidgetOrParentMetaData(EventArgs.HandlerWidget.Get());
-        if (MetaData.IsValid())
-        {
-            UWidget* Widget = Cast<UWidget>(MetaData->SourceObject.Get());
-            if (IsValid(Widget))
-            {
-                if (UViewportWidgetsListFunctionLibrary::FindParentWidgetOfType(LastEnteredWidget, Widget->GetClass()) != Widget)
+                UWidget* Widget = Cast<UWidget>(MetaData->SourceObject.Get());
+                if (IsValid(Widget))
                 {
-                    LastEnteredWidget = Widget;
-                    OnDebuggingInputEvent.Broadcast(EventArgs.InputEventType, EventArgs.Reply.IsEventHandled(), LastEnteredWidget, EventArgs.AdditionalContent);
-                }
-                else
-                {
-                    UE_LOG(LogViewportWidgetsList, Verbose, TEXT("%s: %s is parent of %s"), ANSI_TO_TCHAR(__FUNCTION__), *Widget->GetName(), *LastEnteredWidget->GetName());
+                    OnDebuggingInputEvent.Broadcast(EventArgs.InputEventType, EventArgs.Reply.IsEventHandled(), Widget, EventArgs.AdditionalContent);
                 }
             }
         }
-    }
-    else if (EventArgs.InputEventType == ESlateDebuggingInputEvent::MouseLeave)
-    {
-        TSharedPtr<FReflectionMetaData> MetaData = FReflectionMetaData::GetWidgetOrParentMetaData(EventArgs.HandlerWidget.Get());
-        if (MetaData.IsValid())
+        else if (EventArgs.InputEventType == ESlateDebuggingInputEvent::MouseEnter)
         {
-            UWidget* Widget = Cast<UWidget>(MetaData->SourceObject.Get());
-            if (IsValid(Widget) && Widget == LastEnteredWidget)
+            TSharedPtr<FReflectionMetaData> MetaData = FReflectionMetaData::GetWidgetOrParentMetaData(EventArgs.HandlerWidget.Get());
+            if (MetaData.IsValid())
             {
-                LastEnteredWidget = UViewportWidgetsListFunctionLibrary::FindParentWidgetOfType(LastEnteredWidget, UWidget::StaticClass());
-                if (IsValid(LastEnteredWidget))
+                UWidget* Widget = Cast<UWidget>(MetaData->SourceObject.Get());
+                if (IsValid(Widget))
                 {
-                    OnDebuggingInputEvent.Broadcast(EventArgs.InputEventType, EventArgs.Reply.IsEventHandled(), LastEnteredWidget, EventArgs.AdditionalContent);
+                    if (UViewportWidgetsListFunctionLibrary::FindParentWidgetOfType(LastEnteredWidget, Widget->GetClass()) != Widget)
+                    {
+                        LastEnteredWidget = Widget;
+                        OnDebuggingInputEvent.Broadcast(EventArgs.InputEventType, EventArgs.Reply.IsEventHandled(), LastEnteredWidget, EventArgs.AdditionalContent);
+                    }
+                    else
+                    {
+                        UE_LOG(LogViewportWidgetsList, Verbose, TEXT("%s: %s is parent of %s"), ANSI_TO_TCHAR(__FUNCTION__), *Widget->GetName(), *LastEnteredWidget->GetName());
+                    }
+                }
+            }
+        }
+        else if (EventArgs.InputEventType == ESlateDebuggingInputEvent::MouseLeave)
+        {
+            TSharedPtr<FReflectionMetaData> MetaData = FReflectionMetaData::GetWidgetOrParentMetaData(EventArgs.HandlerWidget.Get());
+            if (MetaData.IsValid())
+            {
+                UWidget* Widget = Cast<UWidget>(MetaData->SourceObject.Get());
+                if (IsValid(Widget) && Widget == LastEnteredWidget)
+                {
+                    LastEnteredWidget = UViewportWidgetsListFunctionLibrary::FindParentWidgetOfType(LastEnteredWidget, UWidget::StaticClass());
+                    if (IsValid(LastEnteredWidget))
+                    {
+                        OnDebuggingInputEvent.Broadcast(EventArgs.InputEventType, EventArgs.Reply.IsEventHandled(), LastEnteredWidget, EventArgs.AdditionalContent);
+                    }
                 }
             }
         }

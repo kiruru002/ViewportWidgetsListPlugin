@@ -10,7 +10,7 @@
 
 UWidget* UViewportWidgetsListFunctionLibrary::FindParentWidgetOfType(UWidget* StartingWidget, TSubclassOf<UWidget> Type)
 {
-    while (IsValid(StartingWidget))
+    while (IsValid(StartingWidget) && StartingWidget->GetFName().IsValid())
     {
         UWidget* LocalRoot = StartingWidget;
         UWidget* LocalParent = LocalRoot->GetParent();
@@ -40,11 +40,8 @@ UWidget* UViewportWidgetsListFunctionLibrary::FindParentWidgetOfType(UWidget* St
                     return StartingWidget;
                 }
             }
-            else
-            {
-                StartingWidget = nullptr;
-            }
         }
+        StartingWidget = nullptr;
     }
 
     return nullptr;
