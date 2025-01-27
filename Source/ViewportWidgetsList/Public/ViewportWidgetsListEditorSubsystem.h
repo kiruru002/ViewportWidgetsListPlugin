@@ -21,6 +21,10 @@ public:
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPIEEvent, bool, bIsSimulating);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGameInstanceEvent, UGameInstance*, GameInstance);
 
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWidgetNumDecreased);
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWidgetNumIncreased, ULocalPlayer*, LocalPlayer);
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnDebuggingInputEvent, ESlateDebuggingInputEvent, InputEventType, bool, Handled, UWidget*, HandlerWidget, const FString&, AdditionalContent);
+
 public:
     UPROPERTY(BlueprintReadWrite, BlueprintAssignable, EditAnywhere, Category = "Default")
     FOnPIEEvent OnPreBeginPIE;
@@ -42,21 +46,10 @@ public:
     FDelegateHandle OnPrePIEEndedHandle;
     FDelegateHandle OnEndPIEHandle;
     FDelegateHandle OnStartGameInstanceHandle;
+    FDelegateHandle OnWidgetAddedHandle;
+    FDelegateHandle OnWidgetRemovedHandle;
+    FDelegateHandle InputEventHandle;
 
-public:
-
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWidgetNumDecreased);
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWidgetNumIncreased, ULocalPlayer*, LocalPlayer);
-    DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnDebuggingInputEvent, ESlateDebuggingInputEvent, InputEventType, bool, Handled, UWidget*, HandlerWidget, const FString&, AdditionalContent);
-
-public:
-    virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-    virtual void Deinitialize() override;
-    void AddViewport(UWidget* Widget, ULocalPlayer* LocalPlayer);
-    void RemoveViewport(UWidget* Widget);
-    void DebuggingInputEvent(const FSlateDebuggingInputEventArgs& EventArgs);
-
-public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UViewportWidgetsListEditorSubsystem")
     TArray<TObjectPtr<UWidget>> ViewportWidgets;
 
@@ -73,4 +66,12 @@ public:
     UGameInstance* CurrentPIEGameInstance;
 
     UWidget* LastEnteredWidget;
+
+public:
+    virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+    virtual void Deinitialize() override;
+    void AddViewport(UWidget* Widget, ULocalPlayer* LocalPlayer);
+    void RemoveViewport(UWidget* Widget);
+    void DebuggingInputEvent(const FSlateDebuggingInputEventArgs& EventArgs);
+
 };

@@ -1,17 +1,22 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright kiruru002. All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "VEREObject.generated.h"
+#include "ViewportWidgetsListSettings.generated.h"
 
 /**
  * 
  */
-UCLASS()
-class VIEWPORTWIDGETSLIST_API UVEREObject : public UObject
+UCLASS(config = EditorPerProjectUserSettings)
+class VIEWPORTWIDGETSLIST_API UViewportWidgetsListSettings : public UObject
 {
 	GENERATED_BODY()
-	
+public:
+	UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
+	bool bEnableViewportWidgetsListPlugin;
+
+public:
+	UViewportWidgetsListSettings();
 };

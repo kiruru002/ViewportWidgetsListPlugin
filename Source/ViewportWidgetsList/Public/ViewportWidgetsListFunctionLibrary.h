@@ -4,11 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "ViewportWidgetsList/Public/ViewportWidgetsListSettings.h"
 #include "ViewportWidgetsListFunctionLibrary.generated.h"
 
-/**
- *
- */
 UCLASS()
 class VIEWPORTWIDGETSLIST_API UViewportWidgetsListFunctionLibrary : public UBlueprintFunctionLibrary
 {
@@ -21,5 +19,11 @@ public:
     */
     UFUNCTION(BlueprintPure = false, Category = "UViewportWidgetsListFunctionLibrary", meta = (DeterminesOutputType = Type))
     static UWidget* FindParentWidgetOfType(UWidget* StartingWidget, TSubclassOf<UWidget> Type);
+
+    UFUNCTION(BlueprintPure = false, Category = "UViewportWidgetsListFunctionLibrary")
+    static UViewportWidgetsListSettings* GetMutableDefaultViewportWidgetsListSettings();
+
+    UFUNCTION(BlueprintPure = false, Category = "UViewportWidgetsListFunctionLibrary")
+    static bool IsViewportWidgetsListPluginEnabled();
 
 };

@@ -1,5 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright kiruru002. All Rights Reserved.
 
+#include "ViewportWidgetsListSettings.h"
 
-#include "VEREObject.h"
+UViewportWidgetsListSettings::UViewportWidgetsListSettings()
+    : Super()
+    , bEnableViewportWidgetsListPlugin(true)
+{
 
+}

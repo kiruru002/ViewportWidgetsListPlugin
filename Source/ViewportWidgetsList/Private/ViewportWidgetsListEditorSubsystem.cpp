@@ -3,6 +3,7 @@
 #include "ViewportWidgetsList/Public/ViewportWidgetsListEditorSubsystem.h"
 #include "ViewportWidgetsList/Public/ViewportWidgetsList.h"
 #include "ViewportWidgetsList/Public/ViewportWidgetsListFunctionLibrary.h"
+#include "ViewportWidgetsList/Public/ViewportWidgetsListSettings.h"
 #include "Blueprint/GameViewportSubsystem.h"
 #include "Components/Button.h"
 #include "Debugging/SlateDebugging.h"
@@ -14,70 +15,99 @@
 void UViewportWidgetsListEditorSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
     LastEnteredWidget = nullptr;
-    OnPreBeginPIEHandle = FEditorDelegates::PreBeginPIE.AddLambda([](const bool bIsSimulating)
+    const UViewportWidgetsListSettings* PluginSettings = GetDefault<UViewportWidgetsListSettings>();
+    if (PluginSettings->bEnableViewportWidgetsListPlugin)
     {
-        if (GEditor)
+        OnPreBeginPIEHandle = FEditorDelegates::PreBeginPIE.AddLambda([](const bool bIsSimulating)
         {
-            UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
-            Subsystem->LastEnteredWidget = nullptr;
-            Subsystem->OnPreBeginPIE.Broadcast(bIsSimulating);
-        }
-    });
-    OnBeginPIEHandle = FEditorDelegates::BeginPIE.AddLambda([](const bool bIsSimulating)
-    {
-        if (GEditor)
+            if (GEditor)
+            {
+                UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
+                Subsystem->LastEnteredWidget = nullptr;
+                Subsystem->OnPreBeginPIE.Broadcast(bIsSimulating);
+            }
+        });
+        OnBeginPIEHandle = FEditorDelegates::BeginPIE.AddLambda([](const bool bIsSimulating)
         {
-            UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
-            Subsystem->OnBeginPIE.Broadcast(bIsSimulating);
-        }
-    });
-    OnPrePIEEndedHandle = FEditorDelegates::PrePIEEnded.AddLambda([](const bool bIsSimulating)
-    {
-        if (GEditor)
+            if (GEditor)
+            {
+                UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
+                Subsystem->OnBeginPIE.Broadcast(bIsSimulating);
+            }
+        });
+        OnPrePIEEndedHandle = FEditorDelegates::PrePIEEnded.AddLambda([](const bool bIsSimulating)
         {
-            UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
-            Subsystem->OnPrePIEEnded.Broadcast(bIsSimulating);
-        }
-    });
-    OnEndPIEHandle = FEditorDelegates::EndPIE.AddLambda([](const bool bIsSimulating)
-    {
-        if (GEditor)
+            if (GEditor)
+            {
+                UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
+                Subsystem->OnPrePIEEnded.Broadcast(bIsSimulating);
+            }
+        });
+        OnEndPIEHandle = FEditorDelegates::EndPIE.AddLambda([](const bool bIsSimulating)
         {
-            UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
-            Subsystem->OnEndPIE.Broadcast(bIsSimulating);
-            Subsystem->CurrentPIEGameInstance = nullptr;
-        }
-    });
-    OnStartGameInstanceHandle = FWorldDelegates::OnStartGameInstance.AddLambda([](UGameInstance* GameInstance)
-    {
-        if (GEditor)
+            if (GEditor)
+            {
+                UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
+                Subsystem->OnEndPIE.Broadcast(bIsSimulating);
+                Subsystem->CurrentPIEGameInstance = nullptr;
+            }
+        });
+        OnStartGameInstanceHandle = FWorldDelegates::OnStartGameInstance.AddLambda([](UGameInstance* GameInstance)
         {
-            UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
-            Subsystem->CurrentPIEGameInstance = GameInstance;
-            Subsystem->OnStartGameInstance.Broadcast(GameInstance);
+            if (GEditor)
+            {
+                UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
+                Subsystem->CurrentPIEGameInstance = GameInstance;
+                Subsystem->OnStartGameInstance.Broadcast(GameInstance);
+            }
+        });
+        if (GEngine)
+        {
+            UGameViewportSubsystem* GameViewportSubsystem = GEngine->GetEngineSubsystem<UGameViewportSubsystem>();
+            if (GameViewportSubsystem)
+            {
+                OnWidgetAddedHandle = GameViewportSubsystem->OnWidgetAdded.AddUObject(this, &UViewportWidgetsListEditorSubsystem::AddViewport);
+                OnWidgetRemovedHandle = GameViewportSubsystem->OnWidgetRemoved.AddUObject(this, &UViewportWidgetsListEditorSubsystem::RemoveViewport);
+            }
         }
-    });
-    UGameViewportSubsystem* GameViewportSubsystem = GEngine->GetEngineSubsystem<UGameViewportSubsystem>();
-    GameViewportSubsystem->OnWidgetAdded.AddUObject(this, &UViewportWidgetsListEditorSubsystem::AddViewport);
-    GameViewportSubsystem->OnWidgetRemoved.AddUObject(this, &UViewportWidgetsListEditorSubsystem::RemoveViewport);
 #if WITH_SLATE_DEBUGGING
-    FSlateDebugging::InputEvent.AddUObject(this, &UViewportWidgetsListEditorSubsystem::DebuggingInputEvent);
+        InputEventHandle = FSlateDebugging::InputEvent.AddUObject(this, &UViewportWidgetsListEditorSubsystem::DebuggingInputEvent);
 #endif
+    }
     Super::Initialize(Collection);
 }
 
 void UViewportWidgetsListEditorSubsystem::Deinitialize()
 {
-    FEditorDelegates::PreBeginPIE.Remove(OnPreBeginPIEHandle);
-    OnPreBeginPIEHandle.Reset();
-    FEditorDelegates::PreBeginPIE.Remove(OnBeginPIEHandle);
-    OnBeginPIEHandle.Reset();
-    FEditorDelegates::PrePIEEnded.Remove(OnPrePIEEndedHandle);
-    OnPrePIEEndedHandle.Reset();
-    FEditorDelegates::EndPIE.Remove(OnEndPIEHandle);
-    OnEndPIEHandle.Reset();
-    FWorldDelegates::OnStartGameInstance.Remove(OnStartGameInstanceHandle);
-    OnStartGameInstanceHandle.Reset();
+    const UViewportWidgetsListSettings* PluginSettings = GetDefault<UViewportWidgetsListSettings>();
+    if (OnPreBeginPIEHandle.IsValid() && PluginSettings->bEnableViewportWidgetsListPlugin)
+    {
+        FEditorDelegates::PreBeginPIE.Remove(OnPreBeginPIEHandle);
+        OnPreBeginPIEHandle.Reset();
+        FEditorDelegates::PreBeginPIE.Remove(OnBeginPIEHandle);
+        OnBeginPIEHandle.Reset();
+        FEditorDelegates::PrePIEEnded.Remove(OnPrePIEEndedHandle);
+        OnPrePIEEndedHandle.Reset();
+        FEditorDelegates::EndPIE.Remove(OnEndPIEHandle);
+        OnEndPIEHandle.Reset();
+        FWorldDelegates::OnStartGameInstance.Remove(OnStartGameInstanceHandle);
+        OnStartGameInstanceHandle.Reset();
+        if (GEngine)
+        {
+            UGameViewportSubsystem* GameViewportSubsystem = GEngine->GetEngineSubsystem<UGameViewportSubsystem>();
+            if (GameViewportSubsystem)
+            {
+                GameViewportSubsystem->OnWidgetAdded.Remove(OnWidgetAddedHandle);
+                OnWidgetAddedHandle.Reset();
+                GameViewportSubsystem->OnWidgetRemoved.Remove(OnWidgetRemovedHandle);
+                OnWidgetRemovedHandle.Reset();
+            }
+        }
+#if WITH_SLATE_DEBUGGING
+        FSlateDebugging::InputEvent.Remove(InputEventHandle);
+        InputEventHandle.Reset();
+#endif
+    }
     Super::Deinitialize();
 }
 
