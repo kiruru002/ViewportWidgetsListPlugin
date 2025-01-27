@@ -6,9 +6,6 @@
 #include "UObject/NoExportTypes.h"
 #include "ViewportWidgetsListSettings.generated.h"
 
-/**
- * 
- */
 UCLASS(config = EditorPerProjectUserSettings)
 class VIEWPORTWIDGETSLIST_API UViewportWidgetsListSettings : public UObject
 {
