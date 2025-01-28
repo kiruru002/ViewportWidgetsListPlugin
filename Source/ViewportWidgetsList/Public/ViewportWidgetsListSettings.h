@@ -14,24 +14,27 @@ struct VIEWPORTWIDGETSLIST_API FViewportWidgetsListSettingsEntry
 {
     GENERATED_BODY()
 public:
-    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
+    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget;
 
-    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
+    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
+    FName SectionName;
+
+    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FText Label;
 
-    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
+    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FText ToolTipText;
 
-    UPROPERTY(VisibleAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
+    UPROPERTY(VisibleAnywhere, config, Category = "UViewportWidgetsListSettings")
     FText DefaultLabel;
 
-    UPROPERTY(VisibleAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
+    UPROPERTY(VisibleAnywhere, config, Category = "UViewportWidgetsListSettings")
     FText DefaultToolTipText;
 
 public:
     FViewportWidgetsListSettingsEntry() = default;
-    FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget, FText Label, FText ToolTipText, FText DefaultLabel, FText DefaultToolTipText);
+    FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget, FName SectionName, FText Label, FText ToolTipText, FText DefaultLabel, FText DefaultToolTipText);
 };
 
 UCLASS(config = EditorPerProjectUserSettings)

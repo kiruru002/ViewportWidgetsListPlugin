@@ -79,7 +79,11 @@ void FViewportWidgetsListModule::RegisterMenus()
                         FName EntryName = FName(FString(TEXT("FViewportWidgetsListSettingsEntry_")) + FString::FromInt(i));
                         FText Label = WidgetSettings.Label.IsEmpty() ? WidgetSettings.DefaultLabel : WidgetSettings.Label;
                         FText ToolTipText = WidgetSettings.ToolTipText.IsEmpty() ? WidgetSettings.DefaultToolTipText : WidgetSettings.ToolTipText;
-                        SubMenu->AddMenuEntry(NAME_None,
+                        if (!WidgetSettings.SectionName.IsNone() && !SubMenu->FindSection(WidgetSettings.SectionName))
+                        {
+                            SubMenu->AddSection(WidgetSettings.SectionName, FText::FromString(WidgetSettings.SectionName.ToString()));
+                        }
+                        SubMenu->AddMenuEntry(WidgetSettings.SectionName,
                             FToolMenuEntry::InitMenuEntry(EntryName, Label, ToolTipText, FSlateIcon(),
                                 FUIAction(FExecuteAction::CreateLambda([Widget]()
                         {
