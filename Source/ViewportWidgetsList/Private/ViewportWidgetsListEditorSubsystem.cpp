@@ -6,6 +6,8 @@
 #include "ViewportWidgetsList/Public/ViewportWidgetsListSettings.h"
 #include "Blueprint/GameViewportSubsystem.h"
 #include "Components/Button.h"
+#include "Components/Widget.h"
+#include "Components/PanelWidget.h"
 #include "Debugging/SlateDebugging.h"
 #include "Types/ReflectionMetadata.h"
 #include "Editor.h"
@@ -14,7 +16,6 @@
 
 void UViewportWidgetsListEditorSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
-    LastEnteredWidget = nullptr;
     const UViewportWidgetsListUserSettings* PluginUserSettings = GetDefault<UViewportWidgetsListUserSettings>();
     if (PluginUserSettings->bEnableViewportWidgetsListPlugin)
     {
@@ -23,7 +24,6 @@ void UViewportWidgetsListEditorSubsystem::Initialize(FSubsystemCollectionBase& C
             if (GEditor)
             {
                 UViewportWidgetsListEditorSubsystem* Subsystem = GEditor->GetEditorSubsystem<UViewportWidgetsListEditorSubsystem>();
-                Subsystem->LastEnteredWidget = nullptr;
                 Subsystem->OnPreBeginPIE.Broadcast(bIsSimulating);
             }
         });
@@ -149,15 +149,8 @@ void UViewportWidgetsListEditorSubsystem::DebuggingInputEvent(const FSlateDebugg
                 UWidget* Widget = Cast<UWidget>(MetaData->SourceObject.Get());
                 if (IsValid(Widget))
                 {
-                    if (UViewportWidgetsListFunctionLibrary::FindParentWidgetOfType(LastEnteredWidget, Widget->GetClass()) != Widget)
-                    {
-                        LastEnteredWidget = Widget;
-                        OnDebuggingInputEvent.Broadcast(EventArgs.InputEventType, EventArgs.Reply.IsEventHandled(), LastEnteredWidget, EventArgs.AdditionalContent);
-                    }
-                    else
-                    {
-                        UE_LOG(LogViewportWidgetsList, Verbose, TEXT("%s: %s is parent of %s"), ANSI_TO_TCHAR(__FUNCTION__), *Widget->GetName(), *LastEnteredWidget->GetName());
-                    }
+                    // TODO: The order in which MouseEnter events are called is wrong, so we need to take action.
+                    OnDebuggingInputEvent.Broadcast(EventArgs.InputEventType, EventArgs.Reply.IsEventHandled(), Widget, EventArgs.AdditionalContent);
                 }
             }
         }
@@ -167,13 +160,9 @@ void UViewportWidgetsListEditorSubsystem::DebuggingInputEvent(const FSlateDebugg
             if (MetaData.IsValid())
             {
                 UWidget* Widget = Cast<UWidget>(MetaData->SourceObject.Get());
-                if (IsValid(Widget) && Widget == LastEnteredWidget)
-                {
-                    LastEnteredWidget = UViewportWidgetsListFunctionLibrary::FindParentWidgetOfType(LastEnteredWidget, UWidget::StaticClass());
-                    if (IsValid(LastEnteredWidget))
-                    {
-                        OnDebuggingInputEvent.Broadcast(EventArgs.InputEventType, EventArgs.Reply.IsEventHandled(), LastEnteredWidget, EventArgs.AdditionalContent);
-                    }
+                if (IsValid(Widget) && IsValid(Cast<UWidget>(Widget->GetParent())))
+                {   
+                    OnDebuggingInputEvent.Broadcast(EventArgs.InputEventType, EventArgs.Reply.IsEventHandled(), Cast<UWidget>(Widget->GetParent()), EventArgs.AdditionalContent);
                 }
             }
         }

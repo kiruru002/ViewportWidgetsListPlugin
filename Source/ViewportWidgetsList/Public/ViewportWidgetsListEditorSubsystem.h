@@ -64,8 +64,6 @@ public:
     UPROPERTY(BlueprintReadOnly, Category = "UViewportWidgetsListEditorSubsystem")
     UGameInstance* CurrentPIEGameInstance;
 
-    UWidget* LastEnteredWidget;
-
 public:
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     virtual void Deinitialize() override;
