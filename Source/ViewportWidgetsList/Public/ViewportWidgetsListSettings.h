@@ -18,6 +18,9 @@ public:
     TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget;
 
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
+    FName SubMenuName;
+
+    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FName SectionName;
 
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
@@ -34,7 +37,7 @@ public:
 
 public:
     FViewportWidgetsListSettingsEntry() = default;
-    FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget, FName SectionName, FText Label, FText ToolTipText, FText DefaultLabel, FText DefaultToolTipText);
+    FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget, FName SubMenuName, FName SectionName, FText Label, FText ToolTipText, FText DefaultLabel, FText DefaultToolTipText);
 };
 
 UCLASS(config = EditorPerProjectUserSettings)

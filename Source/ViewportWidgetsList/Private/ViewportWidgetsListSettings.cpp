@@ -2,8 +2,9 @@
 
 #include "ViewportWidgetsListSettings.h"
 
-FViewportWidgetsListSettingsEntry::FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget, FName SectionName, FText Label, FText ToolTipText, FText DefaultLabel, FText DefaultToolTipText)
+FViewportWidgetsListSettingsEntry::FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget, FName SubMenuName, FName SectionName, FText Label, FText ToolTipText, FText DefaultLabel, FText DefaultToolTipText)
     : Widget(Widget)
+    , SubMenuName(SubMenuName)
     , SectionName(SectionName)
     , Label(Label)
     , ToolTipText(ToolTipText)
@@ -23,7 +24,7 @@ UViewportWidgetsListUserSettings::UViewportWidgetsListUserSettings()
 UViewportWidgetsListSettings::UViewportWidgetsListSettings()
     : Super()
     , ViewportWidgetsListMenuProvidedWidgets({
-    FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint>(FSoftObjectPath(TEXT("/ViewportWidgetsList/EUW_ViewportWidgetsList.EUW_ViewportWidgetsList"))), NAME_None, FText::FromString(TEXT("")), FText::FromString(TEXT("")), FText::FromString(TEXT("EUW_ViewportWidgetsList")), FText::FromString(TEXT("Open EUW_ViewportWidgetsList.")))
+    FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint>(FSoftObjectPath(TEXT("/ViewportWidgetsList/EUW_ViewportWidgetsList.EUW_ViewportWidgetsList"))), NAME_None, NAME_None, FText::FromString(TEXT("")), FText::FromString(TEXT("")), FText::FromString(TEXT("EUW_ViewportWidgetsList")), FText::FromString(TEXT("Open EUW_ViewportWidgetsList.")))
         })
 {
 }
