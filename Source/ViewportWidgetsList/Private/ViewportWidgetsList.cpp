@@ -78,7 +78,6 @@ void FViewportWidgetsListModule::RegisterMenus()
                         {
                             const FViewportWidgetsListSettingsEntry& WidgetSettings = *HierarchyNode->Entries[i];
                             const TSoftObjectPtr<UEditorUtilityWidgetBlueprint>& Widget = WidgetSettings.Widget;
-                            FString Path = Widget.ToSoftObjectPath().GetAssetPath().ToString();
                             FName EntryName = FName(FString(TEXT("FViewportWidgetsListSettingsEntry_")) + FString::FromInt(i));
                             FText Label = WidgetSettings.Label.IsEmpty() ? WidgetSettings.DefaultLabel : WidgetSettings.Label;
                             FText ToolTipText = WidgetSettings.ToolTipText.IsEmpty() ? WidgetSettings.DefaultToolTipText : WidgetSettings.ToolTipText;

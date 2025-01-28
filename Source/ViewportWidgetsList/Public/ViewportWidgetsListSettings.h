@@ -32,10 +32,10 @@ public:
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FText ToolTipText;
 
-    UPROPERTY(VisibleAnywhere, config, Category = "UViewportWidgetsListSettings")
+    UPROPERTY(VisibleAnywhere, Category = "UViewportWidgetsListSettings")
     FText DefaultLabel;
 
-    UPROPERTY(VisibleAnywhere, config, Category = "UViewportWidgetsListSettings")
+    UPROPERTY(VisibleAnywhere, Category = "UViewportWidgetsListSettings")
     FText DefaultToolTipText;
 
 public:
@@ -83,6 +83,7 @@ public:
 
 public:
     UViewportWidgetsListSettings();
+    void FixDefaultTexts();
     virtual void PostInitProperties() override;
 #if WITH_EDITOR
     virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;

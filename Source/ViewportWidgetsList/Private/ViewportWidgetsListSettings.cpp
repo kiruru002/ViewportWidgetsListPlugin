@@ -75,9 +75,19 @@ UViewportWidgetsListUserSettings::UViewportWidgetsListUserSettings()
 UViewportWidgetsListSettings::UViewportWidgetsListSettings()
     : Super()
     , ViewportWidgetsListMenuProvidedWidgets({
-    FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint>(FSoftObjectPath(TEXT("/ViewportWidgetsList/EUW_ViewportWidgetsList.EUW_ViewportWidgetsList"))), NAME_None, NAME_None, FText::FromString(TEXT("")), FText::FromString(TEXT("")), FText::FromString(TEXT("EUW_ViewportWidgetsList")), FText::FromString(TEXT("Open EUW_ViewportWidgetsList.")))
+    FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint>(FSoftObjectPath(TEXT("/ViewportWidgetsList/EUW_ViewportWidgetsList.EUW_ViewportWidgetsList"))), NAME_None, NAME_None, FText::GetEmpty(), FText::GetEmpty(), FText::GetEmpty(), FText::GetEmpty())
         })
 {
+}
+
+void UViewportWidgetsListSettings::FixDefaultTexts()
+{
+    for (FViewportWidgetsListSettingsEntry& WidgetsSettings : ViewportWidgetsListMenuProvidedWidgets)
+    {
+        const FText DisplayName = FText::FromName(WidgetsSettings.Widget.ToSoftObjectPath().GetAssetPath().GetAssetName());
+        WidgetsSettings.DefaultLabel = FText::Format(NSLOCTEXT("FViewportWidgetsListModule", "OpenEUW_Label", "{0}"), DisplayName);
+        WidgetsSettings.DefaultToolTipText = FText::Format(NSLOCTEXT("FViewportWidgetsListModule", "OpenEUW_ToolTipText", "Open {0}."), DisplayName);
+    }
 }
 
 void UViewportWidgetsListSettings::PostInitProperties()
@@ -97,6 +107,7 @@ void UViewportWidgetsListSettings::PostInitProperties()
         }
         Hierarchy->Entries.Add(&Widget);
     }
+    FixDefaultTexts();
     Super::PostInitProperties();
 }
 
@@ -105,12 +116,7 @@ void UViewportWidgetsListSettings::PostEditChangeProperty(FPropertyChangedEvent&
 {
     if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(UViewportWidgetsListSettings, ViewportWidgetsListMenuProvidedWidgets))
     {
-        for (FViewportWidgetsListSettingsEntry& WidgetsSettings : ViewportWidgetsListMenuProvidedWidgets)
-        {
-            const FText DisplayName = FText::FromString(FPaths::GetBaseFilename(WidgetsSettings.Widget.ToSoftObjectPath().GetAssetPath().ToString()));
-            WidgetsSettings.DefaultLabel = FText::Format(NSLOCTEXT("FViewportWidgetsListModule", "OpenEUW_Label", "{0}"), DisplayName);
-            WidgetsSettings.DefaultToolTipText = FText::Format(NSLOCTEXT("FViewportWidgetsListModule", "OpenEUW_ToolTipText", "Open {0}."), DisplayName);
-        }
+        FixDefaultTexts();
     }
 }
 #endif // WITH_EDITOR
