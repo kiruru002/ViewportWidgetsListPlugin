@@ -8,7 +8,7 @@ using namespace std;
 namespace ViewportWidgetsListSettings
 {
 
-    // •¶š—ñ‚ğ‹æØ‚è•¶š‚Å•ªŠ„‚·‚é
+    // æ–‡å­—åˆ—ã‚’åŒºåˆ‡ã‚Šæ–‡å­—ã§åˆ†å‰²ã™ã‚‹
     static vector<string> split(const string& str, char delimiter)
     {
         vector<string> tokens;
@@ -21,13 +21,13 @@ namespace ViewportWidgetsListSettings
         return tokens;
     }
 
-    // FString ¨ std::string ‚Ì•ÏŠ·
+    // FString â†’ std::string ã®å¤‰æ›
     void ConvertFStringToStdString()
     {
         FString UnrealString = TEXT("Hello, Unreal Engine!");
         std::string StandardString = TCHAR_TO_UTF8(*UnrealString);
 
-        // Œ‹‰Ê‚ğo—Í
+        // çµæœã‚’å‡ºåŠ›
         UE_LOG(LogTemp, Log, TEXT("FString: %s"), *UnrealString);
         UE_LOG(LogTemp, Log, TEXT("std::string: %s"), *FString(StandardString.c_str()));
     }

@@ -51,13 +51,13 @@ void FViewportWidgetsListModule::RegisterMenus()
     const UViewportWidgetsListSettings* PluginSettings = GetDefault<UViewportWidgetsListSettings>();
     if (PluginUserSettings->bEnableViewportWidgetsListPlugin && PluginSettings)
     {
-        // ƒƒjƒ…[ƒVƒXƒeƒ€‚Ì‰Šú‰»
+        // ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚·ã‚¹ãƒ†ãƒ ã®åˆæœŸåŒ–
         if (!UToolMenus::IsToolMenuUIEnabled())
         {
             return;
         }
         UToolMenus* ToolMenus = UToolMenus::Get();
-        // ƒƒCƒ“ƒƒjƒ…[‚Ì Tools ƒZƒNƒVƒ‡ƒ“‚É€–Ú‚ð’Ç‰Á
+        // ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã® Tools ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã«é …ç›®ã‚’è¿½åŠ 
         {
             UToolMenu* Menu = ToolMenus->ExtendMenu("Mainframe.MainMenu");
             if (Menu)

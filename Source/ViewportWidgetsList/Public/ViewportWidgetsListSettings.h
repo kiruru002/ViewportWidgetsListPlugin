@@ -18,37 +18,37 @@ struct VIEWPORTWIDGETSLIST_API FViewportWidgetsListSettingsEntry
     GENERATED_BODY()
 public:
 
-    // ƒEƒBƒWƒFƒbƒg‚Ìƒ\ƒtƒgQÆ
+    // ã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆã®ã‚½ãƒ•ãƒˆå‚ç…§
     // Soft object reference to the widget
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget;
 
-    // ƒTƒuƒƒjƒ…[‚Ì–¼‘OBƒRƒ“ƒ}‚âƒsƒŠƒIƒh‚ğg—p‚µ‚ÄŠK‘w‚ğ•\Œ»‚Å‚«‚Ü‚·B
+    // ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®åå‰ã€‚ã‚³ãƒ³ãƒã‚„ãƒ”ãƒªã‚ªãƒ‰ã‚’ä½¿ç”¨ã—ã¦éšå±¤ã‚’è¡¨ç¾ã§ãã¾ã™ã€‚
     // Name of the sub-menu. Hierarchies can be represented using commas or periods.
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FName SubMenuName;
 
-    // ƒƒjƒ…[€–ÚƒZƒNƒVƒ‡ƒ“‚Ì–¼‘O
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã®åå‰
     // Name of the menu item
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FName SectionName;
 
-    // ƒƒjƒ…[€–Ú‚ÌƒeƒLƒXƒg
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®ãƒ†ã‚­ã‚¹ãƒˆ
     // Label of the menu item
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FText Label;
 
-    // ƒƒjƒ…[€–Ú‚Ìƒc[ƒ‹ƒ`ƒbƒv
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—
     // Tooltip of the menu item
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FText TooltipText;
 
-    // ƒƒjƒ…[€–Ú‚ÌƒeƒLƒXƒg (ƒfƒtƒHƒ‹ƒg)
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®ãƒ†ã‚­ã‚¹ãƒˆ (ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ)
     // Label of the menu item (Default)
     UPROPERTY(VisibleAnywhere, Category = "UViewportWidgetsListSettings")
     FText DefaultLabel;
 
-    // ƒƒjƒ…[€–Ú‚Ìƒc[ƒ‹ƒ`ƒbƒv (ƒfƒtƒHƒ‹ƒg)
+    // ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ— (ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ)
     // Tooltip of the menu item (Default)
     UPROPERTY(VisibleAnywhere, Category = "UViewportWidgetsListSettings")
     FText DefaultTooltipText;
@@ -64,9 +64,9 @@ namespace ViewportWidgetsListSettings
     {
     public:
         TArray<const FViewportWidgetsListSettingsEntry*> Entries;
-        // q
+        // å­
         std::map<std::string, std::shared_ptr<Node>> Children;
-        // q‚ğæ“¾i‘¶İ‚µ‚È‚¢ê‡‚Íì¬j
+        // å­ã‚’å–å¾—ï¼ˆå­˜åœ¨ã—ãªã„å ´åˆã¯ä½œæˆï¼‰
         std::shared_ptr<Node> GetChild(const std::string& name);
         std::shared_ptr<Node> GetChildPath(const std::string& path);
     };
@@ -77,7 +77,7 @@ class VIEWPORTWIDGETSLIST_API UViewportWidgetsListUserSettings : public UObject
 {
     GENERATED_BODY()
 public:
-    // ƒrƒ…[ƒ|[ƒgƒEƒBƒWƒFƒbƒgƒŠƒXƒgƒvƒ‰ƒOƒCƒ“‚ğ—LŒø‚É‚·‚é
+    // ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆãƒªã‚¹ãƒˆãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‚’æœ‰åŠ¹ã«ã™ã‚‹
     // Enable the viewport widgets list plugin
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
     bool bEnableViewportWidgetsListPlugin;
@@ -91,12 +91,12 @@ class VIEWPORTWIDGETSLIST_API UViewportWidgetsListSettings : public UObject
 {
     GENERATED_BODY()
 public:
-    // ã•”ƒƒjƒ…[‚É’Ç‰Á‚·‚é€–Ú‚Ì–¼‘O
+    // ä¸Šéƒ¨ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¿½åŠ ã™ã‚‹é …ç›®ã®åå‰
     // Name of the viewport widgets list menu
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
     FText ViewportWidgetsListMenuName;
 
-    // ã•”ƒƒjƒ…[‚É’Ç‰Á‚·‚é€–Ú‚Ìà–¾•¶
+    // ä¸Šéƒ¨ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«è¿½åŠ ã™ã‚‹é …ç›®ã®èª¬æ˜æ–‡
     // Description of the viewport widgets list menu
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
     FText ViewportWidgetsListMenuTooltip;
