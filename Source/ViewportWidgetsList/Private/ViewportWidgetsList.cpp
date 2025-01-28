@@ -97,27 +97,20 @@ void FViewportWidgetsListModule::RegisterMenus()
                                 )
                             );
                         }
+                        for (const auto& [Key, Child] : HierarchyNode->Children)
+                        {
+                            FString Name = UTF8_TO_TCHAR(Key.c_str());
+                            FToolMenuSection& SubMenuSection = Menu->FindOrAddSection(*Name);
+                            SubMenuSection.AddSubMenu(*Name, FText::FromString(Name), FText::FromString(Name),
+                                FNewToolMenuDelegate::CreateLambda([](UToolMenu* Menu, auto&& Self, shared_ptr<Node> HierarchyNode)
+                            {
+                                Self(Menu, Self, HierarchyNode);
+                            }, Self, Child),
+                                true,
+                                FSlateIcon());
+                        }
                     };
                     AddSubMenus(SubMenu, AddSubMenus, PluginSettings->HierarchyRoot);
-                    FToolMenuSection& SubMenuSection = SubMenu->FindOrAddSection("SubMenus");
-                    SubMenuSection.AddSubMenu(TEXT(""), LOCTEXT("ASec", "ASec1"), LOCTEXT("ASec_", "ASec_1"),
-                        FNewToolMenuDelegate::CreateLambda([](UToolMenu* Menu)
-                    {
-                        Menu->AddMenuEntry(
-                            "LogTestEntry", // エントリの名前
-                            FToolMenuEntry::InitMenuEntry(NAME_None,
-                                LOCTEXT("LogTestEntry_Label", "Log Test"), // 表示されるラベル
-                                LOCTEXT("LogTestEntry_Tooltip", "Logs a test message to the Output Log"), // ツールチップ
-                                FSlateIcon(), // アイコン（省略可能）
-                                FUIAction(FExecuteAction::CreateLambda([]()
-                        {
-                            // ログ出力
-                            UE_LOG(LogTemp, Log, TEXT("Menu entry clicked!1"));
-                        })))
-                        );
-                    }),
-                        true,
-                        FSlateIcon());
                 }
             }
         }

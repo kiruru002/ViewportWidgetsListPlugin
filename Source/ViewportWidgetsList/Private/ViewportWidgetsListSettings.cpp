@@ -43,13 +43,13 @@ namespace ViewportWidgetsListSettings
     
     std::shared_ptr<Node> Node::GetChildPath(const std::string& path)
     {
-        vector<string> parts = split(path, '.');
-        shared_ptr<Node> current = shared_from_this();
-        for (const string& part : parts)
+        vector<string> Parts = split(path, '.');
+        shared_ptr<Node> Current = shared_from_this();
+        for (const string& Part : Parts)
         {
-            current = current->GetChild(part);
+            Current = Current->GetChild(Part);
         }
-        return current;
+        return Current;
     }
 }
 
