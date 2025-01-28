@@ -70,14 +70,17 @@ void FViewportWidgetsListModule::RegisterMenus()
                 );
                 if (SubMenu)
                 {
-                    for (const TSoftObjectPtr<UEditorUtilityWidgetBlueprint>& Widget : PluginSettings->ViewportWidgetsListMenuProvidedWidgets)
+
+                    for (int32 i = 0; i < PluginSettings->ViewportWidgetsListMenuProvidedWidgets.Num(); ++i)
                     {
+                        const FViewportWidgetsListSettingsEntry& WidgetSettings = PluginSettings->ViewportWidgetsListMenuProvidedWidgets[i];
+                        const TSoftObjectPtr<UEditorUtilityWidgetBlueprint>& Widget = WidgetSettings.Widget;
                         FString Path = Widget.ToSoftObjectPath().GetAssetPathName().ToString();
-                        FName EntryName = FName(FString(TEXT("OpenEUW_")) + Path);
-                        FText Label = FText::Format(LOCTEXT("OpenEUW_Label", "Open {0}"), FText::FromString(FPaths::GetBaseFilename(Path)));
-                        FText Description = FText::Format(LOCTEXT("OpenEUW_Description", "Open {0}."), FText::FromString(FPaths::GetBaseFilename(Path)));
+                        FName EntryName = FName(FString(TEXT("FViewportWidgetsListSettingsEntry_")) + FString::FromInt(i));
+                        FText Label = WidgetSettings.Label.IsEmpty() ? WidgetSettings.DefaultLabel : WidgetSettings.Label;
+                        FText ToolTipText = WidgetSettings.ToolTipText.IsEmpty() ? WidgetSettings.DefaultToolTipText : WidgetSettings.ToolTipText;
                         SubMenu->AddMenuEntry(NAME_None,
-                            FToolMenuEntry::InitMenuEntry(EntryName, Label, Description, FSlateIcon(),
+                            FToolMenuEntry::InitMenuEntry(EntryName, Label, ToolTipText, FSlateIcon(),
                                 FUIAction(FExecuteAction::CreateLambda([Widget]()
                         {
                             UEditorUtilityWidgetBlueprint* Blueprint = Cast<UEditorUtilityWidgetBlueprint>(Widget.LoadSynchronous());
