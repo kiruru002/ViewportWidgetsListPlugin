@@ -7,6 +7,12 @@ public class ViewportWidgetsList : ModuleRules
     public ViewportWidgetsList(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+        PublicIncludePathModuleNames.AddRange(
+            new string[]
+            {
+                "Blutility",
+            }
+        );
         PublicDependencyModuleNames.AddRange(
             new string[]
             {
@@ -16,15 +22,18 @@ public class ViewportWidgetsList : ModuleRules
         PrivateDependencyModuleNames.AddRange(
             new string[]
             {
+                "Engine",
                 "Core",
                 "CoreUObject",
-                "Engine",
+                "Slate",
                 "SlateCore",
-                "Core",
                 "UnrealEd",
                 "EditorSubsystem",
                 "DeveloperSettings",
                 "UMG",
+                "UMGEditor",
+                "ToolMenus",
+                "Blutility",
             }
         );
     }

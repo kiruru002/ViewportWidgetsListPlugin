@@ -5,6 +5,7 @@
 UViewportWidgetsListSettings::UViewportWidgetsListSettings()
     : Super()
     , bEnableViewportWidgetsListPlugin(true)
+    , ViewportWidgetsListMenuProvidedWidgets({})
 {
 
 }

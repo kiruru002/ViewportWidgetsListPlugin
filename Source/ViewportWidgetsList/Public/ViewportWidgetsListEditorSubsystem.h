@@ -20,7 +20,6 @@ class VIEWPORTWIDGETSLIST_API UViewportWidgetsListEditorSubsystem : public UEdit
 public:
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPIEEvent, bool, bIsSimulating);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGameInstanceEvent, UGameInstance*, GameInstance);
-
     DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWidgetNumDecreased);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnWidgetNumIncreased, ULocalPlayer*, LocalPlayer);
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnDebuggingInputEvent, ESlateDebuggingInputEvent, InputEventType, bool, Handled, UWidget*, HandlerWidget, const FString&, AdditionalContent);

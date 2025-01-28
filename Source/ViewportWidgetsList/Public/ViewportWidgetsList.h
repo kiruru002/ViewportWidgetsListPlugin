@@ -9,10 +9,12 @@
 class FViewportWidgetsListModule : public IModuleInterface
 {
 public:
-
     /** IModuleInterface implementation */
     virtual void StartupModule() override;
     virtual void ShutdownModule() override;
+    /** ~IModuleInterface implementation */
+    void RegisterMenus();
+    void MyCustomAction();
 };
 
 DECLARE_LOG_CATEGORY_EXTERN(LogViewportWidgetsList, Log, All);
