@@ -15,8 +15,8 @@
 void UViewportWidgetsListEditorSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
     LastEnteredWidget = nullptr;
-    const UViewportWidgetsListSettings* PluginSettings = GetDefault<UViewportWidgetsListSettings>();
-    if (PluginSettings->bEnableViewportWidgetsListPlugin)
+    const UViewportWidgetsListUserSettings* PluginUserSettings = GetDefault<UViewportWidgetsListUserSettings>();
+    if (PluginUserSettings->bEnableViewportWidgetsListPlugin)
     {
         OnPreBeginPIEHandle = FEditorDelegates::PreBeginPIE.AddLambda([](const bool bIsSimulating)
         {
@@ -79,8 +79,8 @@ void UViewportWidgetsListEditorSubsystem::Initialize(FSubsystemCollectionBase& C
 
 void UViewportWidgetsListEditorSubsystem::Deinitialize()
 {
-    const UViewportWidgetsListSettings* PluginSettings = GetDefault<UViewportWidgetsListSettings>();
-    if (OnPreBeginPIEHandle.IsValid() && PluginSettings->bEnableViewportWidgetsListPlugin)
+    const UViewportWidgetsListUserSettings* PluginUserSettings = GetDefault<UViewportWidgetsListUserSettings>();
+    if (OnPreBeginPIEHandle.IsValid() && PluginUserSettings->bEnableViewportWidgetsListPlugin)
     {
         FEditorDelegates::PreBeginPIE.Remove(OnPreBeginPIEHandle);
         OnPreBeginPIEHandle.Reset();

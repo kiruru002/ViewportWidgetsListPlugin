@@ -2,10 +2,17 @@
 
 #include "ViewportWidgetsListSettings.h"
 
-UViewportWidgetsListSettings::UViewportWidgetsListSettings()
+UViewportWidgetsListUserSettings::UViewportWidgetsListUserSettings()
     : Super()
     , bEnableViewportWidgetsListPlugin(true)
-    , ViewportWidgetsListMenuProvidedWidgets({})
 {
 
+}
+
+UViewportWidgetsListSettings::UViewportWidgetsListSettings()
+    : Super()
+    , ViewportWidgetsListMenuProvidedWidgets({
+    TSoftObjectPtr<UEditorUtilityWidgetBlueprint>(FSoftObjectPath(TEXT("/ViewportWidgetsList/EUW_ViewportWidgetsList.EUW_ViewportWidgetsList")))
+        })
+{
 }

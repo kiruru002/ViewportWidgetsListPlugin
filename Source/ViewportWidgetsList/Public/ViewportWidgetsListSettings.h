@@ -10,13 +10,22 @@
 #include "ViewportWidgetsListSettings.generated.h"
 
 UCLASS(config = EditorPerProjectUserSettings)
-class VIEWPORTWIDGETSLIST_API UViewportWidgetsListSettings : public UObject
+class VIEWPORTWIDGETSLIST_API UViewportWidgetsListUserSettings : public UObject
 {
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
 	bool bEnableViewportWidgetsListPlugin;
 
+public:
+	UViewportWidgetsListUserSettings();
+};
+
+UCLASS(config = ViewportWidgetsListSettings, DefaultConfig)
+class VIEWPORTWIDGETSLIST_API UViewportWidgetsListSettings : public UObject
+{
+	GENERATED_BODY()
+public:
 	UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
 	TArray<TSoftObjectPtr<UEditorUtilityWidgetBlueprint>> ViewportWidgetsListMenuProvidedWidgets;
 

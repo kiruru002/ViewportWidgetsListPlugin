@@ -14,7 +14,6 @@ public:
     virtual void ShutdownModule() override;
     /** ~IModuleInterface implementation */
     void RegisterMenus();
-    void MyCustomAction();
 };
 
 DECLARE_LOG_CATEGORY_EXTERN(LogViewportWidgetsList, Log, All);

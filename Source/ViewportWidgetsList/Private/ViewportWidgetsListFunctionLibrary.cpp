@@ -47,13 +47,8 @@ UWidget* UViewportWidgetsListFunctionLibrary::FindParentWidgetOfType(UWidget* St
     return nullptr;
 }
 
-UViewportWidgetsListSettings* UViewportWidgetsListFunctionLibrary::GetMutableDefaultViewportWidgetsListSettings()
-{
-    return GetMutableDefault<UViewportWidgetsListSettings>();
-}
-
 bool UViewportWidgetsListFunctionLibrary::IsViewportWidgetsListPluginEnabled()
 {
-    const UViewportWidgetsListSettings* PluginSettings = GetDefault<UViewportWidgetsListSettings>();
-    return PluginSettings->bEnableViewportWidgetsListPlugin;
+    const UViewportWidgetsListUserSettings* PluginUserSettings = GetDefault<UViewportWidgetsListUserSettings>();
+    return PluginUserSettings->bEnableViewportWidgetsListPlugin;
 }

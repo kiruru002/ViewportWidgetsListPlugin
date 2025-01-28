@@ -21,9 +21,6 @@ public:
     static UWidget* FindParentWidgetOfType(UWidget* StartingWidget, TSubclassOf<UWidget> Type);
 
     UFUNCTION(BlueprintPure = false, Category = "UViewportWidgetsListFunctionLibrary")
-    static UViewportWidgetsListSettings* GetMutableDefaultViewportWidgetsListSettings();
-
-    UFUNCTION(BlueprintPure = false, Category = "UViewportWidgetsListFunctionLibrary")
     static bool IsViewportWidgetsListPluginEnabled();
 
 };
