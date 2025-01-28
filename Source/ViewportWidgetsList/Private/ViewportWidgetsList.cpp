@@ -65,8 +65,8 @@ void FViewportWidgetsListModule::RegisterMenus()
                 UToolMenu* SubMenu = Menu->AddSubMenu(Menu,
                     NAME_None,
                     TEXT("FViewportWidgetsListModule_Menu"),
-                    LOCTEXT("FViewportWidgetsListModule_Menu_Label", "EUW"),
-                    LOCTEXT("FViewportWidgetsListModule_Menu_Description", "EUW Menu.")
+                    PluginSettings->ViewportWidgetsListMenuName,
+                    PluginSettings->ViewportWidgetsListMenuTooltip
                 );
                 if (SubMenu)
                 {
@@ -80,13 +80,13 @@ void FViewportWidgetsListModule::RegisterMenus()
                             const TSoftObjectPtr<UEditorUtilityWidgetBlueprint>& Widget = WidgetSettings.Widget;
                             FName EntryName = FName(FString(TEXT("FViewportWidgetsListSettingsEntry_")) + FString::FromInt(i));
                             FText Label = WidgetSettings.Label.IsEmpty() ? WidgetSettings.DefaultLabel : WidgetSettings.Label;
-                            FText ToolTipText = WidgetSettings.ToolTipText.IsEmpty() ? WidgetSettings.DefaultToolTipText : WidgetSettings.ToolTipText;
+                            FText TooltipText = WidgetSettings.TooltipText.IsEmpty() ? WidgetSettings.DefaultTooltipText : WidgetSettings.TooltipText;
                             if (!WidgetSettings.SectionName.IsNone() && !Menu->FindSection(WidgetSettings.SectionName))
                             {
                                 Menu->AddSection(WidgetSettings.SectionName, FText::FromString(WidgetSettings.SectionName.ToString()));
                             }
                             Menu->AddMenuEntry(WidgetSettings.SectionName,
-                                FToolMenuEntry::InitMenuEntry(EntryName, Label, ToolTipText, FSlateIcon(),
+                                FToolMenuEntry::InitMenuEntry(EntryName, Label, TooltipText, FSlateIcon(),
                                     FUIAction(FExecuteAction::CreateLambda([Widget]()
                             {
                                 UEditorUtilityWidgetBlueprint* Blueprint = Cast<UEditorUtilityWidgetBlueprint>(Widget.LoadSynchronous());

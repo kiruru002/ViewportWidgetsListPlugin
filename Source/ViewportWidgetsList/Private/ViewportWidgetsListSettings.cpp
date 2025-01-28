@@ -53,14 +53,14 @@ namespace ViewportWidgetsListSettings
     }
 }
 
-FViewportWidgetsListSettingsEntry::FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget, FName SubMenuName, FName SectionName, FText Label, FText ToolTipText, FText DefaultLabel, FText DefaultToolTipText)
+FViewportWidgetsListSettingsEntry::FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget, FName SubMenuName, FName SectionName, FText Label, FText TooltipText, FText DefaultLabel, FText DefaultTooltipText)
     : Widget(Widget)
     , SubMenuName(SubMenuName)
     , SectionName(SectionName)
     , Label(Label)
-    , ToolTipText(ToolTipText)
+    , TooltipText(TooltipText)
     , DefaultLabel(DefaultLabel)
-    , DefaultToolTipText(DefaultToolTipText)
+    , DefaultTooltipText(DefaultTooltipText)
 {
 
 }
@@ -74,6 +74,8 @@ UViewportWidgetsListUserSettings::UViewportWidgetsListUserSettings()
 
 UViewportWidgetsListSettings::UViewportWidgetsListSettings()
     : Super()
+    , ViewportWidgetsListMenuName(NSLOCTEXT("FViewportWidgetsListModule", "FViewportWidgetsListModule_Menu_Label", "EUW"))
+    , ViewportWidgetsListMenuTooltip(NSLOCTEXT("FViewportWidgetsListModule", "FViewportWidgetsListModule_Menu_Description", "EUW Menu"))
     , ViewportWidgetsListMenuProvidedWidgets({
     FViewportWidgetsListSettingsEntry(TSoftObjectPtr<UEditorUtilityWidgetBlueprint>(FSoftObjectPath(TEXT("/ViewportWidgetsList/EUW_ViewportWidgetsList.EUW_ViewportWidgetsList"))), NAME_None, NAME_None, FText::GetEmpty(), FText::GetEmpty(), FText::GetEmpty(), FText::GetEmpty())
         })
@@ -86,7 +88,7 @@ void UViewportWidgetsListSettings::FixDefaultTexts()
     {
         const FText DisplayName = FText::FromName(WidgetsSettings.Widget.ToSoftObjectPath().GetAssetPath().GetAssetName());
         WidgetsSettings.DefaultLabel = FText::Format(NSLOCTEXT("FViewportWidgetsListModule", "OpenEUW_Label", "{0}"), DisplayName);
-        WidgetsSettings.DefaultToolTipText = FText::Format(NSLOCTEXT("FViewportWidgetsListModule", "OpenEUW_ToolTipText", "Open {0}."), DisplayName);
+        WidgetsSettings.DefaultTooltipText = FText::Format(NSLOCTEXT("FViewportWidgetsListModule", "OpenEUW_TooltipText", "Open {0}."), DisplayName);
     }
 }
 
