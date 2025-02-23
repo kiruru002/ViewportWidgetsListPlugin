@@ -24,8 +24,8 @@ public:
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget;
 
-    // サブメニューの名前。コンマやピリオドを使用して階層を表現できます。
-    // Name of the sub-menu. Hierarchies can be represented using commas or periods.
+    // サブメニューの名前。コンマ(ピリオド)を使用して階層を表現できます。(例：path.to.item)
+    // Name of the sub-menu. Hierarchies can be represented using commas(periods). (ex: path.to.item)
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FName SubMenuName;
 
@@ -126,6 +126,11 @@ public:
     // Display all the parent hierarchies that can be traced from the widget. (Hovered)
     UPROPERTY(EditAnywhere, BlueprintReadOnly, config, Category = "UViewportWidgetsListUserSettings", meta = (DisplayName = "Include All User Widget Hierarchy (Hovered)"))
     bool bIncludeAllUserWidgetsHierarchyHovered;
+
+    // 追加されたカスタムサブメニューの各項目はマウスホバーするだけで開く
+    // Each item in the added custom submenu will open when you hover over it with your mouse.
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, config, Category = "UViewportWidgetsListUserSettings")
+    bool bOpenCustomSubmenuOnMouseHover;
 
 public:
     UViewportWidgetsListUserSettings();

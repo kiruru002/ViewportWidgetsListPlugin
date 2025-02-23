@@ -57,7 +57,7 @@ void FViewportWidgetsListModule::RegisterMenus()
             return;
         }
         UToolMenus* ToolMenus = UToolMenus::Get();
-        // メインメニューの Tools セクションに項目を追加
+        // メインメニューに項目を追加
         {
             UToolMenu* Menu = ToolMenus->ExtendMenu("Mainframe.MainMenu");
             if (Menu)
@@ -96,6 +96,7 @@ void FViewportWidgetsListModule::RegisterMenus()
                                 )
                             );
                         }
+                        const UViewportWidgetsListUserSettings* PluginUserSettings = GetDefault<UViewportWidgetsListUserSettings>();
                         for (const auto& [Key, Child] : HierarchyNode->Children)
                         {
                             FString Name = UTF8_TO_TCHAR(Key.c_str());
@@ -105,7 +106,7 @@ void FViewportWidgetsListModule::RegisterMenus()
                             {
                                 Self(Menu, Self, HierarchyNode);
                             }, Self, Child),
-                                true,
+                                !PluginUserSettings->bOpenCustomSubmenuOnMouseHover,
                                 FSlateIcon());
                         }
                     };

@@ -1,6 +1,8 @@
 // Copyright kiruru002. All Rights Reserved.
 
 #include "ViewportWidgetsListSettings.h"
+#include "ViewportWidgetsList.h"
+#include "Modules/ModuleManager.h"
 
 using namespace ViewportWidgetsListSettings;
 using namespace std;
@@ -72,6 +74,7 @@ UViewportWidgetsListUserSettings::UViewportWidgetsListUserSettings()
     , bIncludeAllUserWidgetsHierarchyClicked(false)
     , bIncludeHandlerWidgetHierarchyHovered(true)
     , bIncludeAllUserWidgetsHierarchyHovered(false)
+    , bOpenCustomSubmenuOnMouseHover(true)
 {
 
 }
@@ -104,6 +107,10 @@ void UViewportWidgetsListUserSettings::PostEditChangeProperty(FPropertyChangedEv
             else if (ChangedProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UViewportWidgetsListUserSettings, bIncludeAllUserWidgetsHierarchyHovered))
             {
                 Subsystem->OnIncludeAllUserWidgetsHierarchyHoveredChanged.Broadcast(bIncludeAllUserWidgetsHierarchyHovered);
+            }
+            else if (ChangedProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UViewportWidgetsListUserSettings, bOpenCustomSubmenuOnMouseHover))
+            {
+                FModuleManager::GetModuleChecked<FViewportWidgetsListModule>(TEXT("ViewportWidgetsList")).RegisterMenus();
             }
         }
     }
