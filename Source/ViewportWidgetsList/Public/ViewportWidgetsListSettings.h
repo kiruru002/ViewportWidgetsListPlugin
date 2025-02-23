@@ -7,6 +7,7 @@
 #include "Templates/SubclassOf.h"
 #include "Components/Widget.h"
 #include "EditorUtilityWidgetBlueprint.h"
+#include "Subsystems/EngineSubsystem.h"
 #include <map>
 #include <memory>
 #include <string>
@@ -72,6 +73,30 @@ namespace ViewportWidgetsListSettings
     };
 }
 
+
+UCLASS()
+class VIEWPORTWIDGETSLIST_API UViewportWidgetsListUserSettingsSubsystem : public UEngineSubsystem
+{
+    GENERATED_BODY()
+public:
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSettingsBoolValueChanged, bool, NewValue);
+
+public:
+
+    UPROPERTY(BlueprintReadWrite, BlueprintAssignable, EditAnywhere, Category = "Default")
+    FOnSettingsBoolValueChanged OnIncludeHandlerWidgetHierarchyClickedChanged;
+
+    UPROPERTY(BlueprintReadWrite, BlueprintAssignable, EditAnywhere, Category = "Default")
+    FOnSettingsBoolValueChanged OnIncludeAllUserWidgetsHierarchyClickedChanged;
+
+    UPROPERTY(BlueprintReadWrite, BlueprintAssignable, EditAnywhere, Category = "Default")
+    FOnSettingsBoolValueChanged OnIncludeHandlerWidgetHierarchyHoveredChanged;
+
+    UPROPERTY(BlueprintReadWrite, BlueprintAssignable, EditAnywhere, Category = "Default")
+    FOnSettingsBoolValueChanged OnIncludeAllUserWidgetsHierarchyHoveredChanged;
+
+};
+
 UCLASS(config = EditorPerProjectUserSettings)
 class VIEWPORTWIDGETSLIST_API UViewportWidgetsListUserSettings : public UObject
 {
@@ -79,11 +104,50 @@ class VIEWPORTWIDGETSLIST_API UViewportWidgetsListUserSettings : public UObject
 public:
     // ビューポートウィジェットリストプラグインを有効にする
     // Enable the viewport widgets list plugin
-    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, config, Category = "UViewportWidgetsListUserSettings", meta = (ConfigRestartRequired = true))
     bool bEnableViewportWidgetsListPlugin;
+
+    // トリガーとなったウィジェットの階層を表示する (Clicked)
+    // Display the hierarchy of the widget that triggered the event (Clicked)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, config, Category = "UViewportWidgetsListUserSettings", meta = (DisplayName = "Include Handler Widget Hierarchy (Clicked)"))
+    bool bIncludeHandlerWidgetHierarchyClicked;
+
+    // ウィジェットからたどれる親の階層を全部表示する (Clicked)
+    // Display all the parent hierarchies that can be traced from the widget. (Clicked)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, config, Category = "UViewportWidgetsListUserSettings", meta = (DisplayName = "Include All User Widget Hierarchy (Clicked)"))
+    bool bIncludeAllUserWidgetsHierarchyClicked;
+
+    // トリガーとなったウィジェットの階層を表示する (Hovered)
+    // Display the hierarchy of the widget that triggered the event (Hovered)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, config, Category = "UViewportWidgetsListUserSettings", meta = (DisplayName = "Include Handler Widget Hierarchy (Hovered)"))
+    bool bIncludeHandlerWidgetHierarchyHovered;
+
+    // ウィジェットからたどれる親の階層を全部表示する (Hovered)
+    // Display all the parent hierarchies that can be traced from the widget. (Hovered)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, config, Category = "UViewportWidgetsListUserSettings", meta = (DisplayName = "Include All User Widget Hierarchy (Hovered)"))
+    bool bIncludeAllUserWidgetsHierarchyHovered;
 
 public:
     UViewportWidgetsListUserSettings();
+
+    UFUNCTION(BlueprintPure = false, Category = "UViewportWidgetsListUserSettings")
+    static const UViewportWidgetsListUserSettings* GetViewportWidgetsListUserSettings();
+
+#if WITH_EDITOR
+    virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+
+    UFUNCTION(BlueprintCallable)
+    void SetIncludeHandlerWidgetHierarchyClicked(bool NewValue);
+
+    UFUNCTION(BlueprintCallable)
+    void SetIncludeAllUserWidgetsHierarchyClicked(bool NewValue);
+
+    UFUNCTION(BlueprintCallable)
+    void SetIncludeHandlerWidgetHierarchyHovered(bool NewValue);
+
+    UFUNCTION(BlueprintCallable)
+    void SetIncludeAllUserWidgetsHierarchyHovered(bool NewValue);
+#endif
 };
 
 UCLASS(config = ViewportWidgetsListSettings, DefaultConfig)

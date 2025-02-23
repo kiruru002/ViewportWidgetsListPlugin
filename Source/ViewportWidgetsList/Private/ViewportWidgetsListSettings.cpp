@@ -68,8 +68,85 @@ FViewportWidgetsListSettingsEntry::FViewportWidgetsListSettingsEntry(TSoftObject
 UViewportWidgetsListUserSettings::UViewportWidgetsListUserSettings()
     : Super()
     , bEnableViewportWidgetsListPlugin(true)
+    , bIncludeHandlerWidgetHierarchyClicked(true)
+    , bIncludeAllUserWidgetsHierarchyClicked(false)
+    , bIncludeHandlerWidgetHierarchyHovered(true)
+    , bIncludeAllUserWidgetsHierarchyHovered(false)
 {
 
+}
+
+const UViewportWidgetsListUserSettings* UViewportWidgetsListUserSettings::GetViewportWidgetsListUserSettings()
+{
+    return GetDefault<UViewportWidgetsListUserSettings>();
+}
+
+void UViewportWidgetsListUserSettings::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+    Super::PostEditChangeProperty(PropertyChangedEvent);
+    if (auto* Subsystem = GEngine->GetEngineSubsystem<UViewportWidgetsListUserSettingsSubsystem>())
+    {
+        FProperty* ChangedProperty = PropertyChangedEvent.Property;
+        if (ChangedProperty)
+        {
+            if (ChangedProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UViewportWidgetsListUserSettings, bIncludeHandlerWidgetHierarchyClicked))
+            {
+                Subsystem->OnIncludeHandlerWidgetHierarchyClickedChanged.Broadcast(bIncludeHandlerWidgetHierarchyClicked);
+            }
+            else if (ChangedProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UViewportWidgetsListUserSettings, bIncludeAllUserWidgetsHierarchyClicked))
+            {
+                Subsystem->OnIncludeAllUserWidgetsHierarchyClickedChanged.Broadcast(bIncludeAllUserWidgetsHierarchyClicked);
+            }
+            else if (ChangedProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UViewportWidgetsListUserSettings, bIncludeHandlerWidgetHierarchyHovered))
+            {
+                Subsystem->OnIncludeHandlerWidgetHierarchyHoveredChanged.Broadcast(bIncludeHandlerWidgetHierarchyHovered);
+            }
+            else if (ChangedProperty->GetFName() == GET_MEMBER_NAME_CHECKED(UViewportWidgetsListUserSettings, bIncludeAllUserWidgetsHierarchyHovered))
+            {
+                Subsystem->OnIncludeAllUserWidgetsHierarchyHoveredChanged.Broadcast(bIncludeAllUserWidgetsHierarchyHovered);
+            }
+        }
+    }
+}
+
+void UViewportWidgetsListUserSettings::SetIncludeHandlerWidgetHierarchyClicked(bool NewValue)
+{
+    bIncludeHandlerWidgetHierarchyClicked = NewValue;
+    SaveConfig();
+    if (auto* Subsystem = GEngine->GetEngineSubsystem<UViewportWidgetsListUserSettingsSubsystem>())
+    {
+        Subsystem->OnIncludeHandlerWidgetHierarchyClickedChanged.Broadcast(bIncludeHandlerWidgetHierarchyClicked);
+    }
+}
+
+void UViewportWidgetsListUserSettings::SetIncludeAllUserWidgetsHierarchyClicked(bool NewValue)
+{
+    bIncludeAllUserWidgetsHierarchyClicked = NewValue;
+    SaveConfig();
+    if (auto* Subsystem = GEngine->GetEngineSubsystem<UViewportWidgetsListUserSettingsSubsystem>())
+    {
+        Subsystem->OnIncludeAllUserWidgetsHierarchyClickedChanged.Broadcast(bIncludeAllUserWidgetsHierarchyClicked);
+    }
+}
+
+void UViewportWidgetsListUserSettings::SetIncludeHandlerWidgetHierarchyHovered(bool NewValue)
+{
+    bIncludeHandlerWidgetHierarchyHovered = NewValue;
+    SaveConfig();
+    if (auto* Subsystem = GEngine->GetEngineSubsystem<UViewportWidgetsListUserSettingsSubsystem>())
+    {
+        Subsystem->OnIncludeHandlerWidgetHierarchyHoveredChanged.Broadcast(bIncludeHandlerWidgetHierarchyHovered);
+    }
+}
+
+void UViewportWidgetsListUserSettings::SetIncludeAllUserWidgetsHierarchyHovered(bool NewValue)
+{
+    bIncludeAllUserWidgetsHierarchyHovered = NewValue;
+    SaveConfig();
+    if (auto* Subsystem = GEngine->GetEngineSubsystem<UViewportWidgetsListUserSettingsSubsystem>())
+    {
+        Subsystem->OnIncludeAllUserWidgetsHierarchyHoveredChanged.Broadcast(bIncludeAllUserWidgetsHierarchyHovered);
+    }
 }
 
 UViewportWidgetsListSettings::UViewportWidgetsListSettings()
