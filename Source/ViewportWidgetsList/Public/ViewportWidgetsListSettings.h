@@ -167,7 +167,7 @@ public:
 
     // 上部メニューに追加する項目の説明文
     // Description of the viewport widgets list menu
-    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
+    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (MultiLine = true))
     FText ViewportWidgetsListMenuTooltip;
 
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
