@@ -165,7 +165,7 @@ void UViewportWidgetsListSettings::FixDefaultTexts()
     {
         const FText DisplayName = FText::FromName(WidgetsSettings.Widget.ToSoftObjectPath().GetAssetPath().GetAssetName());
         WidgetsSettings.DefaultLabel = FText::Format(NSLOCTEXT("FViewportWidgetsListModule", "OpenEUW_Label", "{0}"), DisplayName);
-        WidgetsSettings.DefaultTooltipText = FText::Format(NSLOCTEXT("FViewportWidgetsListModule", "OpenEUW_TooltipText", "Open {0}"), DisplayName);
+        WidgetsSettings.DefaultTooltipText = FText::Format(NSLOCTEXT("FViewportWidgetsListModule", "OpenEUW_TooltipText", "{0}を開く\nOpen {0}"), DisplayName);
     }
 }
 

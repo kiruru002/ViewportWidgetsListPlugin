@@ -2,6 +2,7 @@
 
 #include "ViewportWidgetsList.h"
 #include "ViewportWidgetsList/Public/ViewportWidgetsListSettings.h"
+#include "ViewportWidgetsList/Public/ViewportWidgetsListFunctionLibrary.h"
 #include "Modules/ModuleManager.h"
 #include "Templates/SubclassOf.h"
 #include "Components/Widget.h"
@@ -47,9 +48,8 @@ void FViewportWidgetsListModule::ShutdownModule()
 
 void FViewportWidgetsListModule::RegisterMenus()
 {
-    const UViewportWidgetsListUserSettings* PluginUserSettings = GetDefault<UViewportWidgetsListUserSettings>();
     const UViewportWidgetsListSettings* PluginSettings = GetDefault<UViewportWidgetsListSettings>();
-    if (PluginUserSettings->bEnableViewportWidgetsListPlugin && PluginSettings)
+    if (UViewportWidgetsListFunctionLibrary::IsViewportWidgetsListPluginEnabled() && PluginSettings)
     {
         // メニューシステムの初期化
         if (!UToolMenus::IsToolMenuUIEnabled())
