@@ -3,35 +3,55 @@
 #include "ViewportWidgetsListSettings.h"
 #include "ViewportWidgetsList.h"
 #include "Modules/ModuleManager.h"
+#include <string>
+#include <vector>
+#include <memory>
 
 using namespace ViewportWidgetsListSettings;
 using namespace std;
 
 namespace ViewportWidgetsListSettings
 {
-
     // 文字列を区切り文字で分割する
-    static vector<string> split(const string& str, char delimiter)
+    // ただし、二重引用符で囲まれた文字列は区切り文字として扱わない
+    // 例：("\"1.1\".A.B", '.') → ["1.1", "A", "B"]
+    static std::vector<std::string> SplitPath(const std::string& str, char delimiter)
     {
-        vector<string> tokens;
-        stringstream ss(str);
-        string token;
-        while (getline(ss, token, delimiter))
+        std::vector<std::string> tokens;
+        bool inQuotes = false;
+        bool inEscape = false;
+        std::string token;
+
+        for (char ch : str)
+        {
+            if (inEscape)
+            {
+                token.push_back(ch);
+                inEscape = false;
+            }
+            else if (ch == '\\')
+            {
+                inEscape = true;
+            }
+            else if (ch == '"' || ch == '\'')
+            {
+                inQuotes = !inQuotes;
+            }
+            else if (ch == delimiter && !inQuotes)
+            {
+                tokens.push_back(token);
+                token.clear();
+            }
+            else
+            {
+                token.push_back(ch);
+            }
+        }
+        if (!token.empty())
         {
             tokens.push_back(token);
         }
         return tokens;
-    }
-
-    // FString → std::string の変換
-    void ConvertFStringToStdString()
-    {
-        FString UnrealString = TEXT("Hello, Unreal Engine!");
-        std::string StandardString = TCHAR_TO_UTF8(*UnrealString);
-
-        // 結果を出力
-        UE_LOG(LogTemp, Log, TEXT("FString: %s"), *UnrealString);
-        UE_LOG(LogTemp, Log, TEXT("std::string: %s"), *FString(StandardString.c_str()));
     }
 
     std::shared_ptr<Node> Node::GetChild(const std::string& name)
@@ -45,13 +65,17 @@ namespace ViewportWidgetsListSettings
     
     std::shared_ptr<Node> Node::GetChildPath(const std::string& path)
     {
-        vector<string> Parts = split(path, '.');
-        shared_ptr<Node> Current = shared_from_this();
-        for (const string& Part : Parts)
+        std::vector<std::string> parts = SplitPath(path, '.');
+        std::shared_ptr<Node> current = shared_from_this();
+        for (const std::string& part : parts)
         {
-            Current = Current->GetChild(Part);
+            current = current->GetChild(part);
+            if (!current)
+            {
+                break;
+            }
         }
-        return Current;
+        return current;
     }
 }
 
@@ -176,7 +200,7 @@ void UViewportWidgetsListSettings::FixDefaultTexts()
     }
 }
 
-void UViewportWidgetsListSettings::PostInitProperties()
+void UViewportWidgetsListSettings::UpdateMenuEntryNodes()
 {
     HierarchyRoot = make_shared<Node>();
     for (const FViewportWidgetsListSettingsEntry& Widget : ViewportWidgetsListMenuProvidedWidgets)
@@ -194,15 +218,30 @@ void UViewportWidgetsListSettings::PostInitProperties()
         Hierarchy->Entries.Add(&Widget);
     }
     FixDefaultTexts();
+}
+
+void UViewportWidgetsListSettings::PostInitProperties()
+{
+    UpdateMenuEntryNodes();
     Super::PostInitProperties();
 }
 
 #if WITH_EDITOR
 void UViewportWidgetsListSettings::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
-    if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(UViewportWidgetsListSettings, ViewportWidgetsListMenuProvidedWidgets))
+    Super::PostEditChangeProperty(PropertyChangedEvent);
+    if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(UViewportWidgetsListSettings, ViewportWidgetsListMenuName))
     {
-        FixDefaultTexts();
+        FModuleManager::GetModuleChecked<FViewportWidgetsListModule>(TEXT("ViewportWidgetsList")).RegisterMenus();
+    }
+    else if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(UViewportWidgetsListSettings, ViewportWidgetsListMenuTooltip))
+    {
+        FModuleManager::GetModuleChecked<FViewportWidgetsListModule>(TEXT("ViewportWidgetsList")).RegisterMenus();
+    }
+    else if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(UViewportWidgetsListSettings, ViewportWidgetsListMenuProvidedWidgets))
+    {
+        UpdateMenuEntryNodes();
+        FModuleManager::GetModuleChecked<FViewportWidgetsListModule>(TEXT("ViewportWidgetsList")).RegisterMenus();
     }
 }
 #endif // WITH_EDITOR

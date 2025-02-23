@@ -11,6 +11,8 @@
 #include "Editor.h"
 #include "ISettingsModule.h"
 #include "ToolMenus.h"
+#include "ToolMenu.h"
+#include "ToolMenuSection.h"
 
 #define LOCTEXT_NAMESPACE "FViewportWidgetsListModule"
 
@@ -48,8 +50,7 @@ void FViewportWidgetsListModule::ShutdownModule()
 
 void FViewportWidgetsListModule::RegisterMenus()
 {
-    const UViewportWidgetsListSettings* PluginSettings = GetDefault<UViewportWidgetsListSettings>();
-    if (UViewportWidgetsListFunctionLibrary::IsViewportWidgetsListPluginEnabled() && PluginSettings)
+    if (UViewportWidgetsListFunctionLibrary::IsViewportWidgetsListPluginEnabled())
     {
         // メニューシステムの初期化
         if (!UToolMenus::IsToolMenuUIEnabled())
@@ -62,6 +63,7 @@ void FViewportWidgetsListModule::RegisterMenus()
             UToolMenu* Menu = ToolMenus->ExtendMenu("Mainframe.MainMenu");
             if (Menu)
             {
+                const UViewportWidgetsListSettings* PluginSettings = GetDefault<UViewportWidgetsListSettings>();
                 UToolMenu* SubMenu = Menu->AddSubMenu(Menu,
                     NAME_None,
                     TEXT("FViewportWidgetsListModule_Menu"),
@@ -72,8 +74,10 @@ void FViewportWidgetsListModule::RegisterMenus()
                 {
                     using namespace ViewportWidgetsListSettings;
                     using namespace std;
-                    auto AddSubMenus = [PluginSettings](UToolMenu* Menu, auto&& Self, shared_ptr<Node> HierarchyNode)
+                    auto AddSubMenus = [](UToolMenu* Menu, auto&& Self, shared_ptr<Node> HierarchyNode)
                     {
+                        const UViewportWidgetsListSettings* PluginSettings = GetDefault<UViewportWidgetsListSettings>();
+                        const UViewportWidgetsListUserSettings* PluginUserSettings = GetDefault<UViewportWidgetsListUserSettings>();
                         for (int32 i = 0; i < HierarchyNode->Entries.Num(); ++i)
                         {
                             const FViewportWidgetsListSettingsEntry& WidgetSettings = *HierarchyNode->Entries[i];
@@ -96,7 +100,6 @@ void FViewportWidgetsListModule::RegisterMenus()
                                 )
                             );
                         }
-                        const UViewportWidgetsListUserSettings* PluginUserSettings = GetDefault<UViewportWidgetsListUserSettings>();
                         for (const auto& [Key, Child] : HierarchyNode->Children)
                         {
                             FString Name = UTF8_TO_TCHAR(Key.c_str());
@@ -110,6 +113,15 @@ void FViewportWidgetsListModule::RegisterMenus()
                                 FSlateIcon());
                         }
                     };
+                    TArray<FName> SectionNames;
+                    Algo::Transform(SubMenu->Sections, SectionNames, [](const FToolMenuSection& Section)
+                    {
+                        return Section.Name;
+                    });
+                    for (const FName& SectionName : SectionNames)
+                    {
+                        SubMenu->RemoveSection(SectionName);
+                    }
                     AddSubMenus(SubMenu, AddSubMenus, PluginSettings->HierarchyRoot);
                 }
             }

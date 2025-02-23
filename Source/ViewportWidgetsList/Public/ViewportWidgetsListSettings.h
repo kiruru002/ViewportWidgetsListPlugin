@@ -24,8 +24,8 @@ public:
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     TSoftObjectPtr<UEditorUtilityWidgetBlueprint> Widget;
 
-    // サブメニューの名前。コンマ(ピリオド)を使用して階層を表現できます。(例：path.to.item)
-    // Name of the sub-menu. Hierarchies can be represented using commas(periods). (ex: path.to.item)
+    // サブメニューの名前。ピリオドを使用して階層を表現できます。(例：path.to.item)
+    // Name of the sub-menu. Hierarchies can be represented using periods. (ex: path.to.item)
     UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FName SubMenuName;
 
@@ -162,15 +162,15 @@ class VIEWPORTWIDGETSLIST_API UViewportWidgetsListSettings : public UObject
 public:
     // 上部メニューに追加する項目の名前
     // Name of the viewport widgets list menu
-    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
+    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FText ViewportWidgetsListMenuName;
 
     // 上部メニューに追加する項目の説明文
     // Description of the viewport widgets list menu
-    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
+    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     FText ViewportWidgetsListMenuTooltip;
 
-    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings", meta = (ConfigRestartRequired = true))
+    UPROPERTY(EditAnywhere, config, Category = "UViewportWidgetsListSettings")
     TArray<FViewportWidgetsListSettingsEntry> ViewportWidgetsListMenuProvidedWidgets;
 
     std::shared_ptr<ViewportWidgetsListSettings::Node> HierarchyRoot;
@@ -178,6 +178,7 @@ public:
 public:
     UViewportWidgetsListSettings();
     void FixDefaultTexts();
+    void UpdateMenuEntryNodes();
     virtual void PostInitProperties() override;
 #if WITH_EDITOR
     virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
