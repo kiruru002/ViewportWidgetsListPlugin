@@ -1,5 +1,7 @@
 # UE5_ViewportWidgetsList
 
+このプラグインはダリアさんのZenn投稿記事 ([【UE5】C++を使って今どのWidgetが表示されているのか確認する機構を作る](https://zenn.dev/daria_nicht/articles/ue5-add-viewport-names)) から着想を得て作られています  
+
 ## 目次
 
 - [UE5\_ViewportWidgetsList](#ue5_viewportwidgetslist)
@@ -10,8 +12,6 @@
 		- [ダウンロードした後のプラグインの配置](#ダウンロードした後のプラグインの配置)
 	- [プラグインのビルド](#プラグインのビルド)
 	- [プラグインの設定](#プラグインの設定)
-
-このプラグインはダリアさんのZenn投稿記事 ([【UE5】C++を使って今どのWidgetが表示されているのか確認する機構を作る](https://zenn.dev/daria_nicht/articles/ue5-add-viewport-names)) から着想を得て作られています  
 
 ## UE インストールの方法
 
