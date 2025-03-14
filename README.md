@@ -6,12 +6,41 @@
 
 - [UE5\_ViewportWidgetsList](#ue5_viewportwidgetslist)
 	- [目次](#目次)
+	- [プラグインが提供する機能](#プラグインが提供する機能)
+		- [EUW](#euw)
+		- [サブメニュー](#サブメニュー)
+		- [オプション](#オプション)
+			- [共通オプション](#共通オプション)
+			- [個人オプション](#個人オプション)
 	- [UE インストールの方法](#ue-インストールの方法)
 	- [Visual Studio インストールの方法](#visual-studio-インストールの方法)
 	- [プラグインのダウンロード方法](#プラグインのダウンロード方法)
 		- [ダウンロードした後のプラグインの配置](#ダウンロードした後のプラグインの配置)
 	- [プラグインのビルド](#プラグインのビルド)
+		- [ソリューションファイル(.sln)が生成されないときは](#ソリューションファイルslnが生成されないときは)
 	- [プラグインの設定](#プラグインの設定)
+
+## プラグインが提供する機能
+
+プラグインは、一つの Editor Utility Widget (EUW) をそれを開くためのサブメニューを提供します
+
+### EUW
+
+### サブメニュー
+
+上部メニューを拡張し、独自サブメニューを追加します
+
+![a.png](./README_files/a.png)
+
+### オプション
+
+#### 共通オプション
+
+共通オプションは、エディター上の ProjectSettings で \[UViewportWidgetsListSettings (Editor)\] と表示される項目です
+
+#### 個人オプション
+
+個人オプションは、エディター上の ProjectSettings で \[UViewportWidgetsListSettings (User)\] と表示される項目です
 
 ## UE インストールの方法
 
@@ -22,7 +51,7 @@ Unreal Engine 5.3 向けに作られたプラグインです
 
 ## Visual Studio インストールの方法
 
-Visual Studio で無くても良いですが、ビルド環境も必要です  
+ビルド環境も必要です お好みの IDE で OK 、 ここでは Visual Studio のダウンロードリンクを紹介します  
 [最新の無料バージョンをダウンロードする](https://visualstudio.microsoft.com/ja/vs/community/)  
 このサイトも詳しい→[ue5study.com](https://ue5study.com/how/unrealengine-packaging-visualstudio-settings/)  
 
@@ -38,8 +67,18 @@ Visual Studio で無くても良いですが、ビルド環境も必要です
 
 ## プラグインのビルド
 
-.uproject を右クリックし、 \[Generate Visual Studio project files.\] を押します。 .sln ファイルが生成されます  
+.uproject を右クリックし、 \[Generate Visual Studio project files.\] を押します。 これで .sln ファイルが生成されます  
+
 .sln ファイルを開き、プロジェクトを確認したら、ビルドします  
+
+### ソリューションファイル(.sln)が生成されないときは
+
+もし以下のようなエラーが出力された場合には、プロジェクトに空のソースコードを追加することでエラーを回避できます  
+
+> This project does not have any source code. You need to add C++ source files to the project from the Editor before you can generate project files.
+
+ソースコードのないプロジェクトでは、先にソースコードを追加する必要があります  
+プロジェクトをいったん開いて、\[Tools\] > \[New C++ Class...\] > \[None\] > \[Next\] > \[Create Class\] > \[OK\] > \[Yes\]
 
 ## プラグインの設定
 

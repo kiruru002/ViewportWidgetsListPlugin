@@ -28,7 +28,7 @@ void FViewportWidgetsListModule::StartupModule()
             GetMutableDefault<UViewportWidgetsListUserSettings>()
         );
         SettingsModule->RegisterSettings("Project", "Plugins", "ViewportWidgetsListSettings",
-            LOCTEXT("ViewportWidgetsListSettings_Name", "UViewportWidgetsListSettings"),
+            LOCTEXT("ViewportWidgetsListSettings_Name", "UViewportWidgetsListSettings (Editor)"),
             LOCTEXT("ViewportWidgetsListSettings_Description", "ViewportWidgetsListPlugin's Settings"),
             GetMutableDefault<UViewportWidgetsListSettings>()
         );
