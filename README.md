@@ -18,7 +18,6 @@
 		- [ダウンロードした後のプラグインの配置](#ダウンロードした後のプラグインの配置)
 	- [プラグインのビルド](#プラグインのビルド)
 		- [ソリューションファイル(.sln)が生成されないときは](#ソリューションファイルslnが生成されないときは)
-	- [プラグインの設定](#プラグインの設定)
 
 ## プラグインが提供する機能
 
@@ -46,15 +45,19 @@ UI 上のボタンで機能を一時停止することもできます
 
 共通オプションは、エディター上の Project Settings で \[UViewportWidgetsListSettings (Editor)\] と表示される項目です
 
+![e.png](./README_files/e.png)
+
 設定項目は以下テーブルの通り
+
+  FText ViewportWidgetsListMenuName;
+  FText ViewportWidgetsListMenuTooltip;
+  TArray<FViewportWidgetsListSettingsEntry> ViewportWidgetsListMenuProvidedWidgets;
 
 #### 個人オプション
 
 個人オプションは、エディター上の Project Settings で \[UViewportWidgetsListSettings (User)\] と表示される項目です
 
-  FText ViewportWidgetsListMenuName;
-  FText ViewportWidgetsListMenuTooltip;
-  TArray<FViewportWidgetsListSettingsEntry> ViewportWidgetsListMenuProvidedWidgets;
+![d.png](./README_files/d.png)
 
 設定項目は以下テーブルの通り
 
@@ -102,7 +105,3 @@ Unreal Engine 5.3 向けに作られたプラグインです
 
 ソースコードのないプロジェクトでは、先にソースコードを追加する必要があります  
 プロジェクトをいったん開いて、\[Tools\] > \[New C++ Class...\] > \[None\] > \[Next\] > \[Create Class\] > \[OK\] > \[Yes\]
-
-## プラグインの設定
-
-※プラグインの設定についての説明  
