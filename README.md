@@ -7,7 +7,7 @@
 - [UE5\_ViewportWidgetsList](#ue5_viewportwidgetslist)
 	- [目次](#目次)
 	- [プラグインが提供する機能](#プラグインが提供する機能)
-		- [EUW](#euw)
+		- [EUW\_ViewportWidgetsList](#euw_viewportwidgetslist)
 		- [サブメニュー](#サブメニュー)
 		- [オプション](#オプション)
 			- [共通オプション](#共通オプション)
@@ -24,11 +24,19 @@
 
 プラグインは、一つの Editor Utility Widget (EUW) をそれを開くためのサブメニューを提供します
 
-### EUW
+### EUW_ViewportWidgetsList
+
+EUW_ViewportWidgetsList は画面上のウィジェット名を表示すると同時に、マウスで最後にクリックしたウィジェット、ホバーしたウィジェットを表示します
+UI 上のボタンで機能を一時停止することもできます
+
+\[表示の例\]
+
+![b.png](./README_files/b.png) ![c.png](./README_files/c.png)
 
 ### サブメニュー
 
 上部メニューを拡張し、独自サブメニューを追加します
+このメニューから EUW を開くことができます
 
 ![a.png](./README_files/a.png)
 
@@ -36,11 +44,21 @@
 
 #### 共通オプション
 
-共通オプションは、エディター上の ProjectSettings で \[UViewportWidgetsListSettings (Editor)\] と表示される項目です
+共通オプションは、エディター上の Project Settings で \[UViewportWidgetsListSettings (Editor)\] と表示される項目です
+
+
+
+設定項目は以下テーブルの通り
 
 #### 個人オプション
 
-個人オプションは、エディター上の ProjectSettings で \[UViewportWidgetsListSettings (User)\] と表示される項目です
+個人オプションは、エディター上の Project Settings で \[UViewportWidgetsListSettings (User)\] と表示される項目です
+
+
+
+設定項目は以下テーブルの通り
+
+
 
 ## UE インストールの方法
 

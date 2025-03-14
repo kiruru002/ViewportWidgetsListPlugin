@@ -43,7 +43,8 @@ void FViewportWidgetsListModule::ShutdownModule()
     ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings");
     if (SettingsModule)
     {
-        SettingsModule->UnregisterSettings("Editor", "Plugins", "ViewportWidgetsListSettings");
+        SettingsModule->UnregisterSettings("Project", "Plugins", "ViewportWidgetsListUserSettings");
+        SettingsModule->UnregisterSettings("Project", "Plugins", "ViewportWidgetsListSettings");
     }
 #endif //WITH_EDITOR
 }
