@@ -46,19 +46,24 @@ UI 上のボタンで機能を一時停止することもできます
 
 共通オプションは、エディター上の Project Settings で \[UViewportWidgetsListSettings (Editor)\] と表示される項目です
 
-
-
 設定項目は以下テーブルの通り
 
 #### 個人オプション
 
 個人オプションは、エディター上の Project Settings で \[UViewportWidgetsListSettings (User)\] と表示される項目です
 
-
+  FText ViewportWidgetsListMenuName;
+  FText ViewportWidgetsListMenuTooltip;
+  TArray<FViewportWidgetsListSettingsEntry> ViewportWidgetsListMenuProvidedWidgets;
 
 設定項目は以下テーブルの通り
 
-
+    bool bEnableViewportWidgetsListPlugin;
+    bool bIncludeHandlerWidgetHierarchyClicked;
+    bool bIncludeAllUserWidgetsHierarchyClicked;
+    bool bIncludeHandlerWidgetHierarchyHovered;
+    bool bIncludeAllUserWidgetsHierarchyHovered;
+    bool bOpenCustomSubmenuOnMouseHover;
 
 ## UE インストールの方法
 
