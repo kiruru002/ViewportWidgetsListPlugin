@@ -90,9 +90,9 @@ Unreal Engine 5 のエディタ内で、現在ビューポートに表示され�
 
 #### 個人オプション
 
-エディタの「Project Settings」内の
-\[UViewportWidgetsListSettings (User)\] と表示される項目です
-個人オプションは、EditorPerProjectUserSettings に保存されます
+エディタの「Project Settings」内の  
+\[UViewportWidgetsListSettings (User)\] と表示される項目です  
+個人オプションは、EditorPerProjectUserSettings に保存されます  
 
 ![d.png](./README_files/d.png)
 
