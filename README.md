@@ -47,7 +47,7 @@ Unreal Engine 5 のエディタ内で、現在ビューポートに表示され�
 
 ## プラグインが提供するもの
 
-プラグインは、一つの Editor Utility Widget (EUW) をそれを開くためのサブメニューを提供します
+プラグインは、一つの Editor Utility Widget (EUW) とそれを開くためのサブメニューを提供します
 
 ### EUW_ViewportWidgetsList (ウィジェット一覧表示)
 
